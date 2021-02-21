@@ -1,0 +1,92 @@
+public class Main{
+    public static void Main(String [] args){
+        //create your grid 
+        //read your stuff
+        
+        //read the grid
+        //convert the char grid to creatures
+        
+        
+        //while loop for number of generations:
+            //counter++
+            //move the beetle
+            //move the ant
+            //check if beetle starved
+            //check if ant can breed
+            //check if beetle can breed
+            //convert the creatures grid to char
+            //print the char grid now
+        
+        //close your scanners
+        
+    }
+    //function that reads the file
+        //you have done this
+    //function that converts char grid to creatures
+        //you have done this
+    //function that converts the creatures grid back to char
+        //you will have to do this, same concept as what you have done, and the privious function above
+    
+    //function that moves the ant
+        //create variables that hold distances found from beetles in the NESW direction
+        
+        //traverse through the north direction
+            //if beetle is found
+                //subtract where it was found to where the ant was found, that is your distance That would be row of ant - row of beetle
+        //traverse through the east direction
+            //if beetle is found
+                    //subtract where it was found to where the ant was found, that is your distance That would be col of beetle - col of ant
+        //traverse through the south direction
+            //if beetle is found
+                    //subtract where it was found to where the ant was found, that is your distance That would be row of beetle - row of ant
+        //traverse through the west direction
+            //if beetle is found
+                    //subtract where it was found to where the ant was found, that is your distance That would be row of ant - row of beetle
+                    
+                    
+        //pass this info into your move function you create in ANT class
+        //make a decision on how to move
+        //move in that direction as long as the next position is null and it is in bounds of the grid
+        
+        //BOUNDS:
+            //north: row > 0
+            //east: col < 9
+            //south: row < 9
+            //west: col > 0
+            
+            
+            
+    //function that moves the beetle
+        //creature variables that hold distances found from ants in the NESW directions
+        //traversal is basically the same for beetle. Look at the ant pseudo and you can judge what to do from there. Instead of beetles, you are now looking for ants
+        
+                    
+        //pass this info into your move function you create in BEETLE class
+        //make a decision on how to move
+        //move in that direction as long as the next position is null OR contains an ANT and it is in bounds of the grid
+        
+        //BOUNDS:
+            //north: row > 0
+            //east: col < 9
+            //south: row < 9
+            //west: col > 0
+    
+    //function that starves the beetle
+        //traverse through creatures grid
+            //if a beetle is found at creatures[col][row]
+                //if it has not eaten in 5 turns,
+                    //set that beetle at that position in the grid to null
+    
+    //function that breeds the ant
+        //no traversal is needed for ant or beetle
+        //if the north position of the ant is null
+            //northOpenSpace = true;
+        //...Do this for all direction
+        //pass this info into the breed method you create in the ANT class,
+        //do a case statmenet on how to move, movement is same as in ant move
+    //function that breeds the beetle
+        //litterly the same concept as the breed for ant
+        //The only difference is that you are gonna have to breed only after 8 turns has passed
+        
+        
+//Thats it....You create the brains in the ant and beetle classes and you should be good. Im busy with other stuff so I don't have time to write the pseudo code for ANT and BEETLE classes, but this should give you a good boost. You don't need to write it like this and you can def use what you had previously written and integrate it into the code. Hope this helps.
