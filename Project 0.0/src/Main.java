@@ -43,7 +43,7 @@ public class Main {
 
     public static final ArrayList<Player> players = new ArrayList<>();
     public static void main(String[] args) throws FileNotFoundException {
-
+        System.out.print("Enter File Path: ");
         Scanner input = new Scanner(System.in);
         String userInput;
 
