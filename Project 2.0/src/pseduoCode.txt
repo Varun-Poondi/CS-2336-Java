@@ -1,0 +1,255 @@
+Pseudo Code for Project 2
+Name: Varun Poondi
+Net-ID: VMP190003
+Prof: Jason Smith
+Date: 2/27/2020
+class Node{
+   Node next;
+   Players player;  -> holds player classes as it's data, and will be stored in the linkedList
+   Constructor(Players player)
+   //getters and setters
+}
+
+class LinkList{
+
+    private Node head = null;
+    
+    public void append(Node newNode){ //adds the nodes at the end of the list. Might implement a tail Node for easier insertion
+        if(head == null){
+           head = newNode; //set the node as the head since the list was originally empty
+        }else{
+          Node currentNode = head;
+          while(traverse through list until the next pointer = null){
+                traverse...
+          }
+          currentNode.setNext(newNode);
+          //this will add to the end of the list. We don't need to explicitly state that next is null since it will already be assumed due to code structure
+        }
+    }
+    private Node mergePlayer(Node currentPlayer, Node indexPlayer){
+       // nodes with the same name will get combined together. This function will return a node to the sortList function to be sorted
+       // I have to also remember to delete both of nodes in the sort function
+        Node finalNode;
+        finalNode.getPlayer().getStats()[0] = currentPlayer.getPlayer.getStats()[0] + indexPlayer.getPlayer.getStats()[0]
+        finalNode.getPlayer().getStats()[1] = currentPlayer.getPlayer.getStats()[1] + indexPlayer.getPlayer.getStats()[1]
+        finalNode.getPlayer().getStats()[2] = currentPlayer.getPlayer.getStats()[2] + indexPlayer.getPlayer.getStats()[2]
+        finalNode.getPlayer().getStats()[3] = currentPlayer.getPlayer.getStats()[3] + indexPlayer.getPlayer.getStats()[3]
+        finalNode.getPlayer().getStats()[4] = currentPlayer.getPlayer.getStats()[4] + indexPlayer.getPlayer.getStats()[4]
+        finalNode.getPlayer().getStats()[5] = currentPlayer.getPlayer.getStats()[5] + indexPlayer.getPlayer.getStats()[5]
+        finalNode.getPlayer().getStats()[6] = currentPlayer.getPlayer.getStats()[6] + indexPlayer.getPlayer.getStats()[6]
+        finalNode.getPlayer().getStats()[7] = currentPlayer.getPlayer.getStats()[7] + indexPlayer.getPlayer.getStats()[7]
+        return finalNode;
+    }
+    private void swap(Node currentNode, Node indexNode){ //private method that will be used to assist the sortListAlphabetically() method. 
+        //simple swap. Due to the existing pointers, we will see direct changes into the list.
+        Player temp = currentNode.getPlayer();
+        currentNode.getPlayer() = index.getPlayer();
+        index.getPlayer() = temp;
+    }
+    
+    public void sortListAlphabetically(){ //selection sort i think.
+        Node currentNode = head;
+        Node index = head.getNextNode();
+        if(head == null){ //check if list is empty
+            return;
+        }else{
+            while(currentNode.next != null){
+                while(index.next != null){
+                    int compare = currentNode.getPlayer().getName().compareTo(index.getPlayer().getName().compareTo);
+                    if(compare > 0){ // index should come before currentNode
+                        swap(currentNode, indexNode);
+                    }else if(compare == 0){ //copy detected
+                        Node newNode = mergePlayer(currentNode, index);
+                        set currentNode to newNode and indexNode to newNode.setNextNode() .....
+                        swap(currentNode, indexNode);
+                    }
+                    index = index.next; 
+                }
+                currentNode = currentNode.next;
+            }
+        }
+    }
+    public void displayStat(int statType, String stat){
+        if(head != null){
+            Node node = head;
+            int first, second, third = -1;
+            String firstPlacers, secondPlacers, thirdPlacers = "";
+            boolean firstFlag, secondFlag, thirdFlag = true;
+            int firstPlaceCounters, secondPlaceCounters = 0;
+            while(node != null){
+                if(node.getPlayer().getStats()[statType] >= first){
+                    firstPlaceCounters ++;
+                    third = second;
+                    second = first;
+                    first = node.getPlayer().getStats()[statType]
+                }else if(node.getPlayer().getStats()[statType] >= second){
+                    secondPlaceCounters ++;
+                    third = second;
+                    second = x;
+                }else if(node.getPlayer().getStats()[statType] >= third){
+                    third = x;
+                }
+            }
+            System.out.println(stat);
+
+            //remember to add commas if there are more than 1 player. while loop traversal with flag implementation. Similar to project 0.
+            
+            if(firstPlaceCounters >= 3){
+
+                //print first 3 people to be in first place
+
+            }else if(firstPlaceCounters == 2){
+                //print the first 2 people to be in first place
+                //print 1 person for second place
+            }else if(firstPlaceCounters >= 3){
+                //print person in first place
+                //print the first 3 people in second place
+            }else if(secondPlaceCounters == 2){
+                //print the first 2 people to be in second place
+                //print 1 person for third place
+            }else{
+                //print one person in first place
+                //print one person in second place
+                //print one person in third place
+            }
+            System.out.println();
+        }
+    }
+    public void displayAllLeaderStats(){
+        System.out.print(displayStat(6, "BATTING AVERAGE"));
+        System.out.print(displayStat(7, "ON-BASE PERCENTAGE"));
+        System.out.print(displayStat(1, "HITS"));
+        System.out.print(displayStat(2, "WALKS"));
+        System.out.print(displayStat(3, "STRIKEOUTS"));
+        System.out.print(displayStat(4, "HIT BY PITCH"));
+    }
+    
+
+    public void print(){
+        printLinkedList(head);
+    }
+    public void printLinkedList(Node node){ // After I have sorted everyone by name, I would just print the nodes out and display the player's data
+        if(node != null){
+            System.out.print(node.getPlayer().displayStats());
+            node = node.getNext();
+        }
+    }
+}
+
+class Main{
+    private class Players{ //This class will be used as Nodes in the linkedList
+        //Same code as project 0
+        public String name, battingRecord
+        public double []stats = new double[8];
+        Constructor()
+        Getters and Setters...
+        public void displayStats(){  
+
+    
+    
+            System.out.print(name + <TAB> + Math.round(stats[0]) + <TAB> 
+                                            + Math.round(stats[1]) + <TAB> 
+                                            + Math.round(stats[2]) + <TAB>
+                                            + Math.round(stats[3]) + <TAB>
+                                            + Math.round(stats[4]) + <TAB>
+                                            + Math.round(stats[5]) + <TAB>);
+            double BA = stats[6];
+            double OB = stats[7];
+    
+            //convert to correct precision
+            String strBA = String.format("%.3f", (float) BA);
+            String strOB = String.format("%.3f", (float) OB);
+            System.out.print(strBA + <TAB> strOB);
+            System.out.println();
+        }
+    }
+    public static final linkedList linkedList = new linkedList();
+    public static void Main(String[] args){
+        Scanner input = new Scanner(System.in);
+        String userInput;
+
+        userInput = input.nextLine();
+        File file = new File(userInput);
+        Scanner scanner = new Scanner(file);
+
+        while (scanner.hasNext()) {
+            String name = "";
+            String battingRecord = "";
+            String line = scanner.nextLine();
+            String [] splitter = line.split(" ");     //split the name from the batting record
+            name = splitter[0];
+            battingRecord = splitter[1];
+            Player player = new Player(name, battingRecord);
+            parseBattingRecord(player, battingRecord, player.stats);
+            Node node = new Node(player);
+            linkedList.append(node);
+        }
+        linkedList.sortListAlphabetically();
+        linkedList.print();
+        linked.displayAllLeaderStats();
+    }
+    public static void parseBattingRecord(Player player, String battingRecord, double stats[]){
+        double hits = 0;
+        double walks = 0;
+        double strikeouts = 0;
+        double hitByPitch = 0;
+        double atBat = 0;
+        double sacrifices = 0;
+        double plateAppearances = 0;
+        //parse through batting record
+        for(int i = 0; i < battingRecord.length(); i++){
+            switch(battingRecord.charAt(i)){
+                case 'H':
+                    hits++;
+                    atBat ++;
+                    plateAppearances++;
+                    break;
+                case 'K':
+                    strikeouts ++;
+                    atBat ++;
+                    plateAppearances++;
+                    break;
+                case 'O':
+                    atBat++;
+                    plateAppearances++;
+                    break;
+                case 'W':
+                    walks ++;
+                    plateAppearances++;
+                    break;
+                case 'P':
+                    hitByPitch++;
+                    plateAppearances++;
+                    break;
+                case 'S':
+                    sacrifices++;
+                    plateAppearances++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        Double battingAverage = hits/atBat;
+        Double onBasePercentage = (hits + walks + hitByPitch)/plateAppearances;
+
+        //isNan is going to be used to detect if im dividing by 0, If that is the case for any of the Double values, set those values to 0.000
+        boolean baIsNan = battingAverage.isNaN();
+        boolean obIsNan = onBasePercentage.isNaN();
+
+        if(baIsNan){
+            battingAverage = 0.000;
+        }
+        if(obIsNan){
+            onBasePercentage = 0.000;
+        }
+        //add the stat numbers to each individual player stat array[]
+        player.stats[0] = atBat;
+        player.stats[1] = hits;
+        player.stats[2] = walks;
+        player.stats[3] = strikeouts;
+        player.stats[4] = hitByPitch;
+        player.stats[5] = sacrifices;
+        player.stats[6] = battingAverage;
+        player.stats[7] = onBasePercentage;
+    }
+}
