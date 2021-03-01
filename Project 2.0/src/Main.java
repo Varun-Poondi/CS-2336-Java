@@ -25,7 +25,7 @@ public class Main {
             linkedList.append(node);
         }
         linkedList.sortAlphabetically();
-        //linkedList.print();
+        linkedList.print();
     }
     public static void parseBattingRecord(Player player, String battingRecord){
         double hits = 0;

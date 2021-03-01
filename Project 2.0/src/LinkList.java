@@ -56,10 +56,11 @@ public class LinkList {
     }
     public void sortAlphabetically(){
         Node currentNode = head;
-        Node indexNode = head.getNext();
+        Node indexNode; //initialized to null
         if(head != null){
-            while(currentNode.getNext() != null){
-                while(indexNode.getNext() != null){
+            while(currentNode != null){
+                indexNode = currentNode.getNext();
+                while(indexNode != null){
                     int compare = currentNode.getPlayer().getName().compareTo(indexNode.getPlayer().getName());
                     if(compare > 0){
                         swap(currentNode, indexNode);
@@ -72,8 +73,6 @@ public class LinkList {
                     indexNode = indexNode.getNext();
                 }
                 currentNode = currentNode.getNext();
-                print();
-                System.out.println();
             }
         }
     }
