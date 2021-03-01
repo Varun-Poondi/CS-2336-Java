@@ -54,9 +54,9 @@ public class LinkList {
         
         return mergedNode;
     }
-    public void sortAlphabetically(){
+    public void sortAlphabetically(){ //section sort algorithm
         Node currentNode = head;
-        Node indexNode; //initialized to null
+        Node indexNode = null;
         if(head != null){
             while(currentNode != null){
                 indexNode = currentNode.getNext();
