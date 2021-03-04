@@ -17,20 +17,23 @@ public class LinkList {
        head = newNode;
     }
     private void deleteCopyNodes(String playerName){
+        
         if(head != null){
             Node node = head;
             if(head.getPlayer().getName().equals(playerName)){
-                head.setNext(head.getNext());
+                head = head.getNext();
                 node.setNext(null);
             }else{
-                Node currentNode = head.getNext();
-                while(currentNode.getNext() != null && !currentNode.getNext().getPlayer().getName().equals(playerName)){
-                    currentNode = currentNode.getNext();
-                }
-                if(currentNode.getNext() != null){
-                    node = currentNode.getNext();
-                    currentNode.setNext(currentNode.getNext().getNext());
-                    node.setNext(null);
+                Node currentNode = head;
+                
+                while(currentNode.getNext() != null){
+                    if(currentNode.getNext().getPlayer().getName().equals(playerName)){
+                        node = currentNode.getNext();
+                        currentNode.setNext(currentNode.getNext().getNext());
+                        node.setNext(null);
+                    }else{
+                        currentNode = currentNode.getNext();
+                    }
                 }
             }
         }
@@ -41,22 +44,29 @@ public class LinkList {
         indexNode.setPlayer(temp);
     }
     private Node mergePlayer(Node currentNode, Node indexNode){
-        Node mergedNode = new Node(null);
-        mergedNode.getPlayer().setName(currentNode.getPlayer().getName());
-        mergedNode.getPlayer().getStats()[0] = currentNode.getPlayer().getStats()[0] + indexNode.getPlayer().getStats()[0];
-        mergedNode.getPlayer().getStats()[1] = currentNode.getPlayer().getStats()[1] + indexNode.getPlayer().getStats()[1];
-        mergedNode.getPlayer().getStats()[2] = currentNode.getPlayer().getStats()[2] + indexNode.getPlayer().getStats()[2];
-        mergedNode.getPlayer().getStats()[3] = currentNode.getPlayer().getStats()[3] + indexNode.getPlayer().getStats()[3];
-        mergedNode.getPlayer().getStats()[4] = currentNode.getPlayer().getStats()[4] + indexNode.getPlayer().getStats()[4];
-        mergedNode.getPlayer().getStats()[5] = currentNode.getPlayer().getStats()[5] + indexNode.getPlayer().getStats()[5];
-        mergedNode.getPlayer().getStats()[6] = currentNode.getPlayer().getStats()[6] + indexNode.getPlayer().getStats()[6];
-        mergedNode.getPlayer().getStats()[7] = currentNode.getPlayer().getStats()[7] + indexNode.getPlayer().getStats()[7];
+        int counter = 1;
         
-        return mergedNode;
+        Node traverseNode = currentNode;
+        while(traverseNode.getNext() != null) {
+            if (traverseNode.getNext().getPlayer().getName().equals(indexNode.getPlayer().getName())){
+                counter++;
+            }
+            traverseNode = traverseNode.getNext();
+        } 
+        currentNode.getPlayer().setStats(0, indexNode.getPlayer().getStats()[0] * counter);
+        currentNode.getPlayer().setStats(1, indexNode.getPlayer().getStats()[1] * counter);
+        currentNode.getPlayer().setStats(2, indexNode.getPlayer().getStats()[2] * counter);
+        currentNode.getPlayer().setStats(3, indexNode.getPlayer().getStats()[3] * counter);
+        currentNode.getPlayer().setStats(4, indexNode.getPlayer().getStats()[4] * counter);
+        currentNode.getPlayer().setStats(5, indexNode.getPlayer().getStats()[5] * counter);
+        currentNode.getPlayer().setStats(6, indexNode.getPlayer().getStats()[6] * counter);
+        currentNode.getPlayer().setStats(7, indexNode.getPlayer().getStats()[7] * counter);
+        
+        return currentNode;
     }
     public void sortAlphabetically(){ //section sort algorithm
         Node currentNode = head;
-        Node indexNode = null;
+        Node indexNode;
         if(head != null){
             while(currentNode != null){
                 indexNode = currentNode.getNext();
@@ -66,8 +76,8 @@ public class LinkList {
                         swap(currentNode, indexNode);
                     }else if (compare == 0){
                         Node newNode = mergePlayer(currentNode, indexNode);
+                        deleteCopyNodes(currentNode.getPlayer().getName());
                         prepend(newNode);
-                        deleteCopyNodes(newNode.getPlayer().getName());
                         sortAlphabetically();
                     }
                     indexNode = indexNode.getNext();

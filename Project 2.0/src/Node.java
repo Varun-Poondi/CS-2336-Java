@@ -53,6 +53,9 @@ class Player {
     public double[] getStats() {
         return stats;
     }
+    public void setStats(int index, double stats){
+        getStats()[index] = stats;
+    }
 
     public void displayStats() {
         System.out.print(getName() + "\t"

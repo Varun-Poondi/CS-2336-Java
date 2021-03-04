@@ -1,4 +1,9 @@
-import java.io.File;
+/*Name: Varun Poondi
+* Net-ID: VMP190003
+* Prof: Jason Smith
+* Date: 3/4/2021 */
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -7,15 +12,15 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         System.out.print("Enter File Path: ");
         Scanner input = new Scanner(System.in);
-        String userInput;
+        String fileName;
+        fileName = input.next();
 
-        userInput = input.nextLine();
-        File file = new File(userInput);
-        Scanner scanner = new Scanner(file);
-        while(scanner.hasNext()){
+        Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
+
+        while(sc.hasNext()){
             String name;
             String battingRecord;
-            String line = scanner.nextLine();
+            String line = sc.nextLine();
             String [] splitter = line.split(" ");     //split the name from the batting record
             name = splitter[0];
             battingRecord = splitter[1];
