@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
+    
     public static final LinkList linkedList = new LinkList();
     public static void main(String[] args) throws FileNotFoundException {
         System.out.print("Enter File Path: ");
@@ -31,5 +32,6 @@ public class Main {
         }
         linkedList.sortAlphabetically();
         linkedList.print();
+        linkedList.displayTopScores();
     }
 }

@@ -86,10 +86,94 @@ public class LinkList {
             }
         }
     }
+    public void displayTopScores(){
+        System.out.println("Batting Average");
+        findLeaders(6);
+        System.out.println("ON-BASE PERCENTAGE");
+        findLeaders(7);
+        System.out.println("HITS");
+        findLeaders(1);
+        System.out.println("WALKS");
+        findLeaders(2);
+        System.out.println("STRIKEOUTS");
+        findLeaders(3);
+        System.out.println("HIT BY PITCH");
+        findLeaders(4);
+    }
+    private void findLeaders(int index) {
+        double firstPlace = -1;
+        double secondPlace = -1;
+        double thirdPlace = -1;
+
+        String firstLeaders = "";
+        String secondLeaders = "";
+        String thirdLeaders = "";
+
+
+        if (head != null) {
+            Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.getPlayer().getStats()[index] >= firstPlace) {
+                    thirdPlace = secondPlace;
+                    secondPlace = firstPlace;
+                    firstPlace = currentNode.getPlayer().getStats()[index];
+                } else if (currentNode.getPlayer().getStats()[index] >= secondPlace) {
+                    thirdPlace = secondPlace;
+                    secondPlace = currentNode.getPlayer().getStats()[index];
+                } else if (currentNode.getPlayer().getStats()[index] >= thirdPlace) {
+                    thirdPlace = currentNode.getPlayer().getStats()[index];
+                }
+                currentNode = currentNode.getNext();
+            }
+            currentNode = head;
+            while (currentNode != null) {
+                double statCheck = currentNode.getPlayer().getStats()[index];
+                String playerName = currentNode.getPlayer().getName();
+                if (statCheck == firstPlace) {
+                    firstLeaders += playerName + ",";
+                } else if (statCheck == secondPlace) {
+                    secondLeaders += playerName + ",";
+                } else if (statCheck == thirdPlace) {
+                    thirdLeaders += playerName + ",";
+                }
+                currentNode = currentNode.getNext();
+            }
+        }
+        if (index == 6 || index == 7) {
+            boolean isNanFirst = Double.isNaN(firstPlace);
+            boolean isNanSecond = Double.isNaN(secondPlace);
+            boolean isNanThird = Double.isNaN(thirdPlace);
+            if (isNanFirst) {
+                firstPlace = 0.000;
+            }
+            if (isNanSecond) {
+                secondPlace = 0.000;
+            }
+            if (isNanThird) {
+                thirdPlace = 0.000;
+            }
+            String fP = String.format("%.3f", (float) firstPlace);
+            String sP = String.format("%.3f", (float) secondPlace);
+            String tP = String.format("%.3f", (float) thirdPlace);
+
+
+            System.out.println(
+                    fP + "\t" + firstLeaders + "\n" + 
+                    sP + "\t" + secondLeaders + "\n" + 
+                    tP + "\t" + thirdLeaders + "\n");
+
+
+        }else{
+            System.out.println(
+                    firstPlace + "\t" + firstLeaders + "\n" +
+                            secondPlace + "\t" + secondLeaders + "\n" +
+                            thirdPlace + "\t" + thirdLeaders + "\n");
+        }
+    }
     public void print(){
         printList(head);
     }
-    public void printList(Node node){
+    private void printList(Node node){
         if(node != null){
             node.getPlayer().displayStats();
             
