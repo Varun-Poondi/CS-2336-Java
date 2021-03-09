@@ -15,9 +15,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String fileName;
         fileName = input.next();
-
         Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
-
         while(sc.hasNext()){
             String name;
             String battingRecord;

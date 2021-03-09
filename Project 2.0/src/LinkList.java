@@ -87,17 +87,17 @@ public class LinkList {
         }
     }
     public void displayTopScores(){
-        System.out.println("Batting Average");
+        System.out.println("\nBatting Average");
         findLeaders(6);
-        System.out.println("ON-BASE PERCENTAGE");
-        findLeaders(7);
-        System.out.println("HITS");
+        System.out.println("\nON-BASE PERCENTAGE");
+        findLeaders(7 );
+        System.out.println("\nHITS");
         findLeaders(1);
-        System.out.println("WALKS");
+        System.out.println("\nWALKS");
         findLeaders(2);
-        System.out.println("STRIKEOUTS");
+        System.out.println("\nSTRIKEOUTS");
         findLeaders(3);
-        System.out.println("HIT BY PITCH");
+        System.out.println("\nHIT BY PITCH");
         findLeaders(4);
     }
     private void findLeaders(int index) {
@@ -105,11 +105,14 @@ public class LinkList {
         double secondPlace = -1;
         double thirdPlace = -1;
 
-        String firstLeaders = "";
-        String secondLeaders = "";
-        String thirdLeaders = "";
+        StringBuilder firstLeaders = new StringBuilder();
+        StringBuilder secondLeaders = new StringBuilder();
+        StringBuilder thirdLeaders = new StringBuilder();
 
-
+        boolean isFComma = true;
+        boolean isSComma = true;
+        boolean isTComma = true;
+        
         if (head != null) {
             Node currentNode = head;
             while (currentNode != null) {
@@ -130,11 +133,26 @@ public class LinkList {
                 double statCheck = currentNode.getPlayer().getStats()[index];
                 String playerName = currentNode.getPlayer().getName();
                 if (statCheck == firstPlace) {
-                    firstLeaders += playerName + ",";
+                    if(isFComma) {
+                        firstLeaders.append(playerName);
+                        isFComma = false;
+                    }else{
+                        firstLeaders.append(", ").append(playerName);
+                    }
                 } else if (statCheck == secondPlace) {
-                    secondLeaders += playerName + ",";
+                    if(isSComma) {
+                        secondLeaders.append(playerName);
+                        isSComma = false;
+                    }else{
+                        secondLeaders.append(", ").append(playerName);
+                    }
                 } else if (statCheck == thirdPlace) {
-                    thirdLeaders += playerName + ",";
+                    if(isTComma) {
+                        thirdLeaders.append(playerName);
+                        isTComma = false;
+                    }else{
+                        thirdLeaders.append(", ").append(playerName);
+                    }
                 }
                 currentNode = currentNode.getNext();
             }
@@ -143,33 +161,27 @@ public class LinkList {
             boolean isNanFirst = Double.isNaN(firstPlace);
             boolean isNanSecond = Double.isNaN(secondPlace);
             boolean isNanThird = Double.isNaN(thirdPlace);
-            if (isNanFirst) {
-                firstPlace = 0.000;
-            }
-            if (isNanSecond) {
-                secondPlace = 0.000;
-            }
-            if (isNanThird) {
-                thirdPlace = 0.000;
-            }
+            
+            if (isNanFirst) firstPlace = 0.000;
+            if (isNanSecond) secondPlace = 0.000;
+            if (isNanThird) thirdPlace = 0.000;
+            
             String fP = String.format("%.3f", (float) firstPlace);
             String sP = String.format("%.3f", (float) secondPlace);
             String tP = String.format("%.3f", (float) thirdPlace);
 
 
-            System.out.println(
-                    fP + "\t" + firstLeaders + "\n" + 
-                    sP + "\t" + secondLeaders + "\n" + 
-                    tP + "\t" + thirdLeaders + "\n");
+            if (!firstLeaders.toString().equals("")) System.out.println(fP + "\t" + firstLeaders);
+            if (!secondLeaders.toString().equals("")) System.out.println(sP + "\t" + secondLeaders);
+            if (!thirdLeaders.toString().equals("")) System.out.println(tP + "\t" + thirdLeaders);
 
 
-        }else{
-            System.out.println(
-                    firstPlace + "\t" + firstLeaders + "\n" +
-                            secondPlace + "\t" + secondLeaders + "\n" +
-                            thirdPlace + "\t" + thirdLeaders + "\n");
+        } else {
+            if (!firstLeaders.toString().equals("")) System.out.println(firstPlace + "\t" + firstLeaders);
+            if (!secondLeaders.toString().equals("")) System.out.println(secondPlace + "\t" + secondLeaders);
+            if (!thirdLeaders.toString().equals("")) System.out.println(thirdPlace + "\t" + thirdLeaders);
         }
-    }
+    }   
     public void print(){
         printList(head);
     }
@@ -181,6 +193,4 @@ public class LinkList {
         }
         
     }
-
-    
 }
