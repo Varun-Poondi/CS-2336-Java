@@ -20,16 +20,17 @@ public class Main {
             String name;
             String battingRecord;
             String line = sc.nextLine();
-            String [] splitter = line.split(" ");     //split the name from the batting record
+            String [] splitter = line.split(" ");     //split the name from the batting record, regex magic
             name = splitter[0];
             battingRecord = splitter[1];
             Player player = new Player(name, battingRecord);                      //create new Player with name and batting record
-            Node node = new Node(player);
-            node.parseBattingRecord(player, battingRecord);
-            linkedList.append(node);
+            Node node = new Node(player);                                         //add player to a Node
+            node.parseBattingRecord(player, battingRecord);                       //parse the player batting record and store it into the player's stats array
+            linkedList.append(node);                                              //append the node the beginning of the list
         }
-        linkedList.sortAlphabetically();
-        linkedList.print();
-        linkedList.displayTopScores();
+        //linkedList list function calls
+        linkedList.sortAlphabetically();                // sort the linkedList in an alphabetical manner
+        linkedList.print();                             // print the nodes of the linkedList
+        linkedList.displayTopScores();                  //  displays the highScores of players in the top 3 places
     }
 }

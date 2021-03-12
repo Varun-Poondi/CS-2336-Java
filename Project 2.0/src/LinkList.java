@@ -1,66 +1,81 @@
 public class LinkList {
     private Node head;
     
-    public void append(Node newNode){
+    
+    public void append(Node newNode){ //adds node to the end of the LinkedList  
         if(head == null){
-           head = newNode;
+           head = newNode; //set the newNode has the head
         }else{
             Node currentNode = head;
-            while(currentNode.getNext() != null){
+            while(currentNode.getNext() != null){ //while loop will traverse to the end of linkedList
                 currentNode = currentNode.getNext();
             }
-            currentNode.setNext(newNode);
+            currentNode.setNext(newNode); //addNode at the end
         }
     }
-    private void prepend(Node newNode){
-       newNode.setNext(head);
-       head = newNode;
+    private void prepend(Node newNode){ //adds node to beginning of the LinkedList
+       newNode.setNext(head); //sets the next value to the head
+       head = newNode; //make the newNode as the head
     }
-    private void deleteCopyNodes(String playerName){
+    private void deleteCopyNodes(String playerName){ //linear search through linkedList and deletes Nodes that have the same playerName
         
-        if(head != null){
+        if(head != null){ //null check
             Node node = head;
-            if(head.getPlayer().getName().equals(playerName)){
-                head = head.getNext();
-                node.setNext(null);
+            if(head.getPlayer().getName().equals(playerName)){ //if the head has the same player
+                head = head.getNext(); //set the head as the next value
+                node.setNext(null); //delete node
             }else{
-                Node currentNode = head;
-                
+                Node currentNode = head; //traversing node
                 while(currentNode.getNext() != null){
-                    if(currentNode.getNext().getPlayer().getName().equals(playerName)){
-                        node = currentNode.getNext();
-                        currentNode.setNext(currentNode.getNext().getNext());
-                        node.setNext(null);
+                    if(currentNode.getNext().getPlayer().getName().equals(playerName)){ //if the currentNode finds the target playerName
+                        node = currentNode.getNext(); //set node to point to the nextNode of the currentNode
+                        currentNode.setNext(currentNode.getNext().getNext()); // make the currentNode to point to the next next node so that the middle node will be isolated
+                        node.setNext(null); //delete the isolated node
                     }else{
-                        currentNode = currentNode.getNext();
+                        currentNode = currentNode.getNext(); //move forward
                     }
                 }
             }
         }
     }
-    private void swap(Node currentNode, Node indexNode){
-        Player temp = currentNode.getPlayer();
-        currentNode.setPlayer(indexNode.getPlayer());
-        indexNode.setPlayer(temp);
+    private void swap(Node currentNode, Node indexNode){ //simple swap function
+        Player temp = currentNode.getPlayer(); //temp value holds Player of the currentNode
+        currentNode.setPlayer(indexNode.getPlayer()); //Swaps the player classes
+        indexNode.setPlayer(temp); //index node takes in previous player
     }
-    private Node mergePlayer(Node currentNode, Node indexNode){
-        int counter = 1;
-        
+    private Node mergePlayer(Node currentNode){ //Merges the Data of player that have the same name from different Nodes
+        double stat0 = 0;
+        double stat1 = 0;
+        double stat2 = 0;
+        double stat3 = 0;
+        double stat4 = 0;
+        double stat5 = 0;
+        double stat6 = 0;
+        double stat7 = 0;
         Node traverseNode = currentNode;
-        while(traverseNode.getNext() != null) {
-            if (traverseNode.getNext().getPlayer().getName().equals(indexNode.getPlayer().getName())){
-                counter++;
+        while(traverseNode.getNext() != null) { //while loop is used to find the number of times player name is shared by the currentNode and the Traverse node. Finding number of duplicate players
+            if (traverseNode.getNext().getPlayer().getName().equals(currentNode.getPlayer().getName())){ //playerName has been detected
+                //update the stat values by adding from the  traverseNode's stats
+                stat0 += traverseNode.getNext().getPlayer().getStats()[0];
+                stat1 += traverseNode.getNext().getPlayer().getStats()[1];
+                stat2 += traverseNode.getNext().getPlayer().getStats()[2];
+                stat3 += traverseNode.getNext().getPlayer().getStats()[3];
+                stat4 += traverseNode.getNext().getPlayer().getStats()[4];
+                stat5 += traverseNode.getNext().getPlayer().getStats()[5];
+                stat6 += traverseNode.getNext().getPlayer().getStats()[6];
+                stat7 += traverseNode.getNext().getPlayer().getStats()[7];
             }
             traverseNode = traverseNode.getNext();
-        } 
-        currentNode.getPlayer().setStats(0, indexNode.getPlayer().getStats()[0] * counter);
-        currentNode.getPlayer().setStats(1, indexNode.getPlayer().getStats()[1] * counter);
-        currentNode.getPlayer().setStats(2, indexNode.getPlayer().getStats()[2] * counter);
-        currentNode.getPlayer().setStats(3, indexNode.getPlayer().getStats()[3] * counter);
-        currentNode.getPlayer().setStats(4, indexNode.getPlayer().getStats()[4] * counter);
-        currentNode.getPlayer().setStats(5, indexNode.getPlayer().getStats()[5] * counter);
-        currentNode.getPlayer().setStats(6, indexNode.getPlayer().getStats()[6] * counter);
-        currentNode.getPlayer().setStats(7, indexNode.getPlayer().getStats()[7] * counter);
+        }
+        //add the currentNode stats to the stat variables since we never covered the currentNode itself
+        currentNode.getPlayer().setStats(0, currentNode.getPlayer().getStats()[0] + stat0); 
+        currentNode.getPlayer().setStats(1, currentNode.getPlayer().getStats()[1] + stat1);
+        currentNode.getPlayer().setStats(2, currentNode.getPlayer().getStats()[2] + stat2);
+        currentNode.getPlayer().setStats(3, currentNode.getPlayer().getStats()[3] + stat3);
+        currentNode.getPlayer().setStats(4, currentNode.getPlayer().getStats()[4] + stat4);
+        currentNode.getPlayer().setStats(5, currentNode.getPlayer().getStats()[5] + stat5);
+        currentNode.getPlayer().setStats(6, currentNode.getPlayer().getStats()[6] + stat6);
+        currentNode.getPlayer().setStats(7, currentNode.getPlayer().getStats()[7] + stat7);
         
         return currentNode;
     }
@@ -75,7 +90,7 @@ public class LinkList {
                     if(compare > 0){
                         swap(currentNode, indexNode);
                     }else if (compare == 0){
-                        Node newNode = mergePlayer(currentNode, indexNode);
+                        Node newNode = mergePlayer(currentNode);
                         deleteCopyNodes(currentNode.getPlayer().getName());
                         prepend(newNode);
                         sortAlphabetically();
