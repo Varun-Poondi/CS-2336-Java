@@ -1,7 +1,6 @@
 public class Node {
-   
-    private Node next;
-    private Player player;
+    private Node next; //next pointer
+    private Player player; //contains a Player as it's data
 
     public Node(Player player) {
         this.next = null;
@@ -23,7 +22,7 @@ public class Node {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    public void parseBattingRecord(Player player, String battingRecord){
+    public void parseBattingRecord(Player player, String battingRecord){ //parses a player's batting average and stores it into their stat's array
         double hits = 0;
         double walks = 0;
         double strikeouts = 0;
@@ -121,7 +120,7 @@ class Player {
         getStats()[index] = stats;
     }
 
-    public void displayStats() {
+    public void displayStats() {  //displays the stats in the player's stats array 
         System.out.print(getName() + "\t"
                 + Math.round(getStats()[0]) + "\t"
                 + Math.round(getStats()[1]) + "\t"

@@ -79,21 +79,25 @@ public class LinkList {
         
         return currentNode;
     }
+    // Sorts the linkedList alphabetically based on the player's names 
     public void sortAlphabetically(){ //section sort algorithm
         Node currentNode = head;
-        Node indexNode;
+        Node indexNode; 
         if(head != null){
             while(currentNode != null){
-                indexNode = currentNode.getNext();
+                indexNode = currentNode.getNext(); //this node will move currentNode + 1 position
                 while(indexNode != null){
-                    int compare = currentNode.getPlayer().getName().compareTo(indexNode.getPlayer().getName());
+                    //compareTo() > 0 -> swap needs to occur since the indexNode's name is alphabetically superior 
+                    //compareTo() < 0 -> now swap need, already in correct place
+                    //compareTo == 0 -> Names are the same
+                    int compare = currentNode.getPlayer().getName().compareTo(indexNode.getPlayer().getName()); //compare to Value.
                     if(compare > 0){
-                        swap(currentNode, indexNode);
-                    }else if (compare == 0){
-                        Node newNode = mergePlayer(currentNode);
-                        deleteCopyNodes(currentNode.getPlayer().getName());
-                        prepend(newNode);
-                        sortAlphabetically();
+                        swap(currentNode, indexNode); 
+                    }else if (compare == 0){  //must merge Nodes
+                        Node newNode = mergePlayer(currentNode); //create Node with the values of the mergedNode
+                        deleteCopyNodes(currentNode.getPlayer().getName()); //delete all copies of Nodes that have the same name as the currentNode
+                        prepend(newNode); //add the newNode to the beginning of the linkedList
+                        sortAlphabetically(); //recursive call to sort the node into it's correct place
                     }
                     indexNode = indexNode.getNext();
                 }
@@ -101,6 +105,7 @@ public class LinkList {
             }
         }
     }
+    //public function that will call the findLeaders() function to print the highScores and top 3 leaders based on the specified category(index value) 
     public void displayTopScores(){
         System.out.println("\nBatting Average");
         findLeaders(6);
@@ -115,7 +120,9 @@ public class LinkList {
         System.out.println("\nHIT BY PITCH");
         findLeaders(4);
     }
+    //prints the top 3 leaders and highScores
     private void findLeaders(int index) {
+        //initialize to -1 to be able to find max highScore
         double firstPlace = -1;
         double secondPlace = -1;
         double thirdPlace = -1;
@@ -131,19 +138,22 @@ public class LinkList {
         if (head != null) {
             Node currentNode = head;
             while (currentNode != null) {
-                if (currentNode.getPlayer().getStats()[index] >= firstPlace) {
-                    thirdPlace = secondPlace;
+                //we find the places by using an algorithm that passes on the smallest value recorded to the places underneath it, insuring that we correctly record the placing in a 1st,2nd, 3rd order
+                if (currentNode.getPlayer().getStats()[index] >= firstPlace) { //store in first place
+                    thirdPlace = secondPlace; 
                     secondPlace = firstPlace;
                     firstPlace = currentNode.getPlayer().getStats()[index];
-                } else if (currentNode.getPlayer().getStats()[index] >= secondPlace) {
+                } else if (currentNode.getPlayer().getStats()[index] >= secondPlace) { //store in second place
                     thirdPlace = secondPlace;
                     secondPlace = currentNode.getPlayer().getStats()[index];
-                } else if (currentNode.getPlayer().getStats()[index] >= thirdPlace) {
+                } else if (currentNode.getPlayer().getStats()[index] >= thirdPlace) { //store in third place
                     thirdPlace = currentNode.getPlayer().getStats()[index];
                 }
                 currentNode = currentNode.getNext();
             }
             currentNode = head;
+            
+            //traverses the linkedList again to get player names that have the same highScores in their stats array 
             while (currentNode != null) {
                 double statCheck = currentNode.getPlayer().getStats()[index];
                 String playerName = currentNode.getPlayer().getName();
@@ -172,11 +182,11 @@ public class LinkList {
                 currentNode = currentNode.getNext();
             }
         }
-        if (index == 6 || index == 7) {
+        if (index == 6 || index == 7) { //special case, 6, 7 have decimal precision 
             boolean isNanFirst = Double.isNaN(firstPlace);
             boolean isNanSecond = Double.isNaN(secondPlace);
             boolean isNanThird = Double.isNaN(thirdPlace);
-            
+            //check if any of the places are getting divided by 0, if so, set the places to 0.000
             if (isNanFirst) firstPlace = 0.000;
             if (isNanSecond) secondPlace = 0.000;
             if (isNanThird) thirdPlace = 0.000;
@@ -185,18 +195,20 @@ public class LinkList {
             String sP = String.format("%.3f", (float) secondPlace);
             String tP = String.format("%.3f", (float) thirdPlace);
 
-
+            //as long as the strings is not empty, display the names 
             if (!firstLeaders.toString().equals("")) System.out.println(fP + "\t" + firstLeaders);
             if (!secondLeaders.toString().equals("")) System.out.println(sP + "\t" + secondLeaders);
             if (!thirdLeaders.toString().equals("")) System.out.println(tP + "\t" + thirdLeaders);
 
 
         } else {
+            //as long as the strings are not empty, display the names
             if (!firstLeaders.toString().equals("")) System.out.println(firstPlace + "\t" + firstLeaders);
             if (!secondLeaders.toString().equals("")) System.out.println(secondPlace + "\t" + secondLeaders);
             if (!thirdLeaders.toString().equals("")) System.out.println(thirdPlace + "\t" + thirdLeaders);
         }
     }   
+    //recursive function to print the linkedList
     public void print(){
         printList(head);
     }
