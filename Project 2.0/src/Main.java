@@ -11,12 +11,11 @@ public class Main {
     
     public static final LinkList linkedList = new LinkList();
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.print("Enter File Path: ");
         Scanner input = new Scanner(System.in);
         String fileName;
         fileName = input.next();
         Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
-        while(sc.hasNext()){
+        while(sc.hasNextLine()){
             String name;
             String battingRecord;
             String line = sc.nextLine();
