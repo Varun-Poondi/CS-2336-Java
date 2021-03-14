@@ -5,6 +5,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -20,8 +21,15 @@ public class Main {
             String battingRecord;
             String line = sc.nextLine();
             String [] splitter = line.split(" ");     //split the name from the batting record, regex magic
-            name = splitter[0];
-            battingRecord = splitter[1];
+            try {
+                name = splitter[0];
+                battingRecord = splitter[1];
+            }
+            catch(IndexOutOfBoundsException exception){
+                System.out.println(exception.getMessage());
+                System.out.println(Arrays.toString(exception.getStackTrace()));
+                return;
+            }
             Player player = new Player(name, battingRecord);                      //create new Player with name and batting record
             Node node = new Node(player);                                         //add player to a Node
             node.parseBattingRecord(player, battingRecord);                       //parse the player batting record and store it into the player's stats array
