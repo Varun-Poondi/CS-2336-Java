@@ -1,7 +1,6 @@
 public class LinkList {
     private Node head;
     
-    
     public void append(Node newNode){ //adds node to the end of the LinkedList  
         if(head == null){
            head = newNode; //set the newNode has the head
@@ -13,18 +12,14 @@ public class LinkList {
             currentNode.setNext(newNode); //addNode at the end
         }
     }
-    private void prepend(Node newNode){ //adds node to beginning of the LinkedList
-       newNode.setNext(head); //sets the next value to the head
-       head = newNode; //make the newNode as the head
-    }
-    private void deleteCopyNodes(String playerName){ //linear search through linkedList and deletes Nodes that have the same playerName
-        
+    
+    private void deleteCopyNodes(String playerName, Node specialNode){ //linear search through linkedList and deletes Nodes that have the same playerName
         if(head != null){ //null check
             Node currentNode = head; //traversing node
             Node previousNode = null;
             while(currentNode != null){
                 //move forward
-                if(currentNode.getPlayer().getName().equals(playerName)){ //if the currentNode finds the target playerName
+                if(currentNode.getPlayer().getName().equals(playerName) && currentNode != specialNode){ //if the currentNode finds the target playerName
                     if(currentNode == head){ //check if currentNode is head
                         head = head.getNext(); //set the head as the next value
                     }else if(previousNode != null){
@@ -34,73 +29,90 @@ public class LinkList {
                     previousNode = currentNode;
                 }
                 currentNode = currentNode.getNext();
-
             }
         }
     }
     
     private void swap(Node currentNode, Node indexNode){ //simple swap function
-        Player temp = currentNode.getPlayer(); //temp value holds Player of the currentNode
+        Node.Player temp = currentNode.getPlayer(); //temp value holds Player of the currentNode
         currentNode.setPlayer(indexNode.getPlayer()); //Swaps the player classes
         indexNode.setPlayer(temp); //index node takes in previous player
     }
-    private Node mergePlayer(Node currentNode){ //Merges the Data of player that have the same name from different Nodes
-        double stat0 = 0;
-        double stat1 = 0;
-        double stat2 = 0;
-        double stat3 = 0;
-        double stat4 = 0;
-        double stat5 = 0;
-        double stat6 = 0;
-        double stat7 = 0;
+    
+    private void mergePlayer(Node currentNode){ //Merges the Data of player that have the same name from different Nodes
+        double atBats = 0; 
+        double hits = 0;  
+        double walks = 0; 
+        double outs = 0;
+        double strikeouts = 0; 
+        double hitByPitch = 0;  
+        double sacrifices = 0;  
+        double battingAverage = 0;
+        double onBasePercentage = 0;
         Node traverseNode = currentNode;
-        while(traverseNode.getNext() != null) { //while loop is used to find the number of times player name is shared by the currentNode and the Traverse node. Finding number of duplicate players
-            if (traverseNode.getNext().getPlayer().getName().equals(currentNode.getPlayer().getName())){ //playerName has been detected
+        
+        while(traverseNode != null) { //while loop is used to find the number of times player name is shared by the currentNode and the Traverse node. Finding number of duplicate players
+            if (traverseNode.getPlayer().getName().equals(currentNode.getPlayer().getName())){ //playerName has been detected
                 //update the stat values by adding from the  traverseNode's stats
-                stat0 += traverseNode.getNext().getPlayer().getStats()[0];
-                stat1 += traverseNode.getNext().getPlayer().getStats()[1];
-                stat2 += traverseNode.getNext().getPlayer().getStats()[2];
-                stat3 += traverseNode.getNext().getPlayer().getStats()[3];
-                stat4 += traverseNode.getNext().getPlayer().getStats()[4];
-                stat5 += traverseNode.getNext().getPlayer().getStats()[5];
-                stat6 += traverseNode.getNext().getPlayer().getStats()[6];
-                stat7 += traverseNode.getNext().getPlayer().getStats()[7];
+                atBats += traverseNode.getPlayer().getStats()[0];
+                hits += traverseNode.getPlayer().getStats()[1];
+                walks += traverseNode.getPlayer().getStats()[2];
+                strikeouts += traverseNode.getPlayer().getStats()[3];
+                hitByPitch += traverseNode.getPlayer().getStats()[4];
+                sacrifices += traverseNode.getPlayer().getStats()[5];
+                outs += traverseNode.getPlayer().getStats()[8];
+
+                battingAverage = (hits)/(hits + outs + strikeouts);
+                onBasePercentage = (hits + walks + hitByPitch)/(hits + strikeouts + outs + walks + hitByPitch + sacrifices);
             }
             traverseNode = traverseNode.getNext();
         }
-        //add the currentNode stats to the stat variables since we never covered the currentNode itself
-        currentNode.getPlayer().setStats(0, currentNode.getPlayer().getStats()[0] + stat0); 
-        currentNode.getPlayer().setStats(1, currentNode.getPlayer().getStats()[1] + stat1);
-        currentNode.getPlayer().setStats(2, currentNode.getPlayer().getStats()[2] + stat2);
-        currentNode.getPlayer().setStats(3, currentNode.getPlayer().getStats()[3] + stat3);
-        currentNode.getPlayer().setStats(4, currentNode.getPlayer().getStats()[4] + stat4);
-        currentNode.getPlayer().setStats(5, currentNode.getPlayer().getStats()[5] + stat5);
-        currentNode.getPlayer().setStats(6, currentNode.getPlayer().getStats()[6] + stat6);
-        currentNode.getPlayer().setStats(7, currentNode.getPlayer().getStats()[7] + stat7);
         
-        return currentNode;
+        boolean baIsNan = Double.isNaN(battingAverage);
+        boolean obIsNan = Double.isNaN(onBasePercentage);
+
+        if(baIsNan){
+            battingAverage = 0.000;
+        }
+        if(obIsNan){
+            onBasePercentage = 0.000;
+        }
+        
+        //update the current node 
+        if(currentNode != null) {
+            currentNode.getPlayer().setStats(0, atBats);
+            currentNode.getPlayer().setStats(1, hits);
+            currentNode.getPlayer().setStats(2, walks);
+            currentNode.getPlayer().setStats(3, strikeouts);
+            currentNode.getPlayer().setStats(4, hitByPitch);
+            currentNode.getPlayer().setStats(5, sacrifices);
+            currentNode.getPlayer().setStats(6, battingAverage);
+            currentNode.getPlayer().setStats(7, onBasePercentage);
+            currentNode.getPlayer().setStats(8, outs);
+        }
     }
     // Sorts the linkedList alphabetically based on the player's names 
+    // compareTo() > 0 -> swap needs to occur since the indexNode's name is alphabetically superior 
+    // compareTo() < 0 -> now swap need, already in correct place
+    // compareTo == 0 -> Names are the same
     public void sortAlphabetically(){ 
         Node currentNode = head;
-        Node indexNode; 
+        Node indexNode;
+     
         if(head != null){
             while(currentNode != null){
                 indexNode = currentNode.getNext(); //this node will move currentNode + 1 position
                 while(indexNode != null){
-                    //compareTo() > 0 -> swap needs to occur since the indexNode's name is alphabetically superior 
-                    //compareTo() < 0 -> now swap need, already in correct place
-                    //compareTo == 0 -> Names are the same
                     int compare = currentNode.getPlayer().getName().compareTo(indexNode.getPlayer().getName()); //compare to Value.
                     if(compare > 0){
                         swap(currentNode, indexNode); 
                     }else if (compare == 0){  //must merge Nodes
-                        Node newNode = mergePlayer(currentNode); //create Node with the values of the mergedNode
-                        deleteCopyNodes(currentNode.getPlayer().getName()); //delete all copies of Nodes that have the same name as the currentNode
-                        prepend(newNode); //add the newNode to the beginning of the linkedList
-                        sortAlphabetically(); //recursive call to sort the node into it's correct place
+                        mergePlayer(currentNode); //update the currentNode 
+                        deleteCopyNodes(currentNode.getPlayer().getName(), currentNode); //delete all copies of Nodes that have the same name as the currentNode and ignore the updated Node
+                        indexNode = currentNode.getNext(); //traverse
+                    }else {
+                        indexNode = indexNode.getNext();
                     }
-                    indexNode = indexNode.getNext();
                 }
                 currentNode = currentNode.getNext();
             }
@@ -126,10 +138,10 @@ public class LinkList {
     }
     //prints the top 3 leaders and highScores
     private void findLeaders(int index) {
-        //initialize to 0 to be able to find max highScore
-        double firstPlace = 0;
-        double secondPlace = 0;
-        double thirdPlace = 0;
+        //initialize to a low value to be able to find max highScore, chose -100 cuz why not??
+        double firstPlace = -100.0;
+        double secondPlace = -100.0;
+        double thirdPlace = -100.0;
 
         StringBuilder firstLeaders = new StringBuilder();
         StringBuilder secondLeaders = new StringBuilder();
@@ -142,32 +154,33 @@ public class LinkList {
         if (head != null) {
             Node currentNode = head;
             if(index == 3) { //these variables will be changed only if we are tyring to find the StrikeOuts leaders 
-                firstPlace = currentNode.getPlayer().getStats()[index];
-                secondPlace = currentNode.getPlayer().getStats()[index];
-                thirdPlace = currentNode.getPlayer().getStats()[index];
+                firstPlace = Double.MAX_VALUE;
+                secondPlace = Double.MAX_VALUE;
+                thirdPlace = Double.MAX_VALUE;
             }
             while (currentNode != null) {
                 //we find the places by using an algorithm that passes on the smallest value recorded to the places underneath it, insuring that we correctly record the placing in a 1st,2nd, 3rd order
+                double compareValue = currentNode.getPlayer().getStats()[index];
                 if(index != 3) {
-                    if (currentNode.getPlayer().getStats()[index] > firstPlace) { //store in first place
+                    if (compareValue > firstPlace) { //store in first place
                         thirdPlace = secondPlace;
                         secondPlace = firstPlace;
                         firstPlace = currentNode.getPlayer().getStats()[index];
-                    } else if (currentNode.getPlayer().getStats()[index] > secondPlace) { //store in second place
+                    } else if (compareValue > secondPlace) { //store in second place
                         thirdPlace = secondPlace;
                         secondPlace = currentNode.getPlayer().getStats()[index];
-                    } else if (currentNode.getPlayer().getStats()[index] > thirdPlace) { //store in third place
+                    } else if (compareValue > thirdPlace) { //store in third place
                         thirdPlace = currentNode.getPlayer().getStats()[index];
                     }
                 }else{
-                    if (currentNode.getPlayer().getStats()[index] < firstPlace) { //store in first place
+                    if (compareValue < firstPlace) { //store in first place
                         thirdPlace = secondPlace;
                         secondPlace = firstPlace;
                         firstPlace = currentNode.getPlayer().getStats()[index];
-                    } else if (currentNode.getPlayer().getStats()[index] < secondPlace) { //store in second place
+                    } else if (compareValue < secondPlace) { //store in second place
                         thirdPlace = secondPlace;
                         secondPlace = currentNode.getPlayer().getStats()[index];
-                    } else if (currentNode.getPlayer().getStats()[index] < thirdPlace) { //store in third place
+                    } else if (compareValue < thirdPlace) { //store in third place
                         thirdPlace = currentNode.getPlayer().getStats()[index];
                     }
                 }
@@ -221,8 +234,7 @@ public class LinkList {
             if (!firstLeaders.toString().equals("")) System.out.println(fP + "\t" + firstLeaders);
             if (!secondLeaders.toString().equals("")) System.out.println(sP + "\t" + secondLeaders);
             if (!thirdLeaders.toString().equals("")) System.out.println(tP + "\t" + thirdLeaders);
-
-
+            
         } else {
             //as long as the strings are not empty, display the names
             if (!firstLeaders.toString().equals("")) System.out.println(Math.round(firstPlace) + "\t" + firstLeaders);
@@ -237,7 +249,6 @@ public class LinkList {
     private void printList(Node node){
         if(node != null){
             node.getPlayer().displayStats();
-            
             printList(node.getNext());
         }
         

@@ -1,37 +1,32 @@
 public class StringDebugger {
-    public static void main(String[] args) {
-        
-        //debugString("Varun ",93,31,31,31,31,31);
-        debugString("Peach ", 9,2,2,2,2,2);
-        debugString("Rosalina ",11,4,2,0,2, 0);
-        debugString("Toad ", 12,2,2,4,0,1);
-        debugString("Wario ", 13,4,1,3,1,0);
-        debugString("Yoshi ",9,2,2,4,2,2);
-        
+    public static void main(String[] args){
+        debugString("Luigi ", 93,31,31,31,31,31);
+        debugString("Daisy",14	,5	,1,	2,	0,	0);
+        debugString("Mario", 11, 3, 3,2,	1,0);
     }
     public static void debugString(String name, int atBats, int hits, int walks, int strikeouts, int hitByPitch, int sacrifices){
-        StringBuilder result = new StringBuilder();
+        String result = "";
         int i;
-        result.append(name);
+        result += name;
         for(i = 0; i < hits; i++){
-            result.append("H");
+            result += "H";
         }
         for(i = 0; i < strikeouts; i++){
-            result.append("K");
+            result += "K";
         }
         for(i = 0; i < walks; i++){
-            result.append("W");
+            result += "W";
         }
         for(i = 0; i < hitByPitch; i++){
-            result.append("P");
+            result += "P";
         }
         for(i = 0; i < sacrifices; i++){
-            result.append("S");
+            result += "S";
         }
         int numberOfOuts = atBats - strikeouts - hits;
         
         for(i = 0; i < numberOfOuts; i++){
-            result.append("O");
+            result += "O";
         }
         System.out.println(result);
     }

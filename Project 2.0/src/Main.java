@@ -5,7 +5,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -17,23 +16,17 @@ public class Main {
         fileName = input.next();
         Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
         while(sc.hasNextLine()){
+            Scanner sc1 = new Scanner(sc.nextLine());
             String name;
             String battingRecord;
-            String line = sc.nextLine();
-            String [] splitter = line.split(" ");     //split the name from the batting record, regex magic
-            try {
-                name = splitter[0];
-                battingRecord = splitter[1];
+            while(sc1.hasNext()) {
+                name = sc1.next();                                     //store name
+                battingRecord = sc1.next();                            //store batting average
+                Node.Player player = new Node.Player(name);                      //create new Player 
+                Node node = new Node(player);                                         //add player to a Node
+                node.parseBattingRecord(player, battingRecord);                       //parse the player batting record and store it into the player's stats array
+                linkedList.append(node);                                              //append the node the beginning of the list
             }
-            catch(IndexOutOfBoundsException exception){
-                System.out.println(exception.getMessage());
-                System.out.println(Arrays.toString(exception.getStackTrace()));
-                return;
-            }
-            Player player = new Player(name, battingRecord);                      //create new Player with name and batting record
-            Node node = new Node(player);                                         //add player to a Node
-            node.parseBattingRecord(player, battingRecord);                       //parse the player batting record and store it into the player's stats array
-            linkedList.append(node);                                              //append the node the beginning of the list
         }
         //linkedList list function calls
         linkedList.sortAlphabetically();                // sort the linkedList in an alphabetical manner
