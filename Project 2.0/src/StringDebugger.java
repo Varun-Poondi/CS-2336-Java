@@ -5,28 +5,28 @@ public class StringDebugger {
         debugString("Mario", 11, 3, 3,2,	1,0);
     }
     public static void debugString(String name, int atBats, int hits, int walks, int strikeouts, int hitByPitch, int sacrifices){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int i;
-        result += name;
+        result.append(name);
         for(i = 0; i < hits; i++){
-            result += "H";
+            result.append("H");
         }
         for(i = 0; i < strikeouts; i++){
-            result += "K";
+            result.append("K");
         }
         for(i = 0; i < walks; i++){
-            result += "W";
+            result.append("W");
         }
         for(i = 0; i < hitByPitch; i++){
-            result += "P";
+            result.append("P");
         }
         for(i = 0; i < sacrifices; i++){
-            result += "S";
+            result.append("S");
         }
         int numberOfOuts = atBats - strikeouts - hits;
         
         for(i = 0; i < numberOfOuts; i++){
-            result += "O";
+            result.append("O");
         }
         System.out.println(result);
     }
