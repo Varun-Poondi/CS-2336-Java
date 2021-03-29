@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 public class Main {
+    public static final BinTree<Payload> tree = new BinTree<>();
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Hello World");
         Scanner input = new Scanner(System.in);
@@ -102,7 +103,7 @@ public class Main {
                     Payload payload = integrate(coefficient, exponent);
                     System.out.println(payload.getIntegral());
                     Node<Payload> node= new Node<>(payload);
-                    
+                    tree.Insert(node, tree.getRoot());
                     
                     
                     //reset variables
