@@ -1,0 +1,171 @@
+Name: Varun Poondi
+Prof: Jason Smith
+Net-ID: VMP190003
+Date: 3/27/2021
+
+class PayLoad:  //this class can only be called in main
+  private int coefficient;
+  private int exponent;
+  private String variable
+  private String integralResult;
+
+  getters, setters, constructors ...
+  
+
+  @Override
+  public int compareTo(PayLoad obj){
+    if(this.exponent == obj.exponent && this.variable == obj.variable){
+      return 0;
+    }
+    return -1;
+  }
+
+
+  @Override
+  public String toString(){
+    print(integralResult);
+  }
+
+class Node<N extends Comparable <N>> implements Comparable<N>: 
+  private Node<N> leftNode
+  private Node<N> rightNode
+  private N data; 
+
+  getters, setters, constructors ...
+
+  @Override 
+  public int compareTo(Node<T> obj){
+    return this.data.compareTo(obj.data);
+  }
+
+  public String toString(){  //calls the payLoad's toStringMethod
+    return data.toString();
+  }
+
+
+class BinTree<T>:
+  private Node<T> root;
+
+  getter for root
+
+  public void Insert(Node<T> newNode, Node<T> currentNode){
+    if(root == null){
+      root = newNode;
+    }else{
+      Node<T> currentNode = root;
+      if(newNode.compareTo(currentNode) <= 0){
+        currentNode.getLeftNode() = Insert(newNode, currentNode.getLeftNode());
+      }else{
+        currentNode.getRightNode() = Insert(newNode, currentNode.getRightNode());
+      }
+    }
+  }
+  public Node<T> Search(T payLoad, Node<T> searchNode){
+    if(root == null){
+      return null;
+    }else{
+      Node<T> traverseNode = root;
+      if(traverseNode.compareTo(searchNode) == 0){
+        return traverseNode;
+      }else if(traverseNode.compareTo(searchNode) < 0){
+        return Search(payLoad, traverseNode.getLeftNode());
+      }else if(traverseNode.compareTo(searchNode) > 0){
+        return Search(payLoad, traverseNode.getLeftNode());
+      }
+    }
+  }
+  public void Delete(T payLoad){
+
+  }
+  public void clearTree(){
+    root = null; //our boi garbage collection will take care of the rest
+  }
+  
+  public void inOrderTraversal(Node<T> currentNode){
+    inOrderTraversal(currentNode.getLeftNode());
+    print(currentNode)
+    inOrderTraversal(currentNode.getRightNode()):
+  }
+
+
+class Main:
+  public static final BinTree tree = new BinTree();
+  public static void main(String[] args){
+      Scanner input = new Scanner(System.in);
+        String fileName;
+        fileName = input.next();
+        Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
+        while(sc.hasNextLine()){
+            Scanner sc1 = new Scanner(sc.nextLine());
+            boolean isDefiniteIntegral = true;
+            int coefficient = 1;
+            int exponent = 1;
+            String variable = "";
+            while(sc1.hasNext()) {
+                if(sc1.next() != "|"){ //if the first character on the line is not an integral symbol, then its a indefinite Integral 
+                  isDefiniteIntegral = false;
+            }
+
+                //still thinking about how to implement this in 
+                if there is a coefficient detected, store it in
+                if there is a letter variable, store it in
+                if there is an exponent detected, store it in
+                
+                PayLoad payload = integratePayload(coefficient, variable, exponent);
+                Node node = new Node(payLoad);
+                tree.Insert(node);
+            }
+            tree.clearTree();
+        }
+  }
+  public static int GCD(int a, int b){
+    if (b==0){
+      return a;
+    }
+    return GCD(b,a%b);
+  }
+
+  public static PayLoad integratePayload(String coefficient, String variableName, String exponent){  //3x^2
+    Pattern pattern = Pattern.compile("-?[0-9]+");
+    Matcher matcher = pattern.matcher(coefficient);
+    int integerCoefficient = 1;
+    int integerExponent = Integer.parseInt(integerExponent);
+
+    if(matcher.find()) {
+      integerCoefficient = Integer.parseInt(matcher.group());
+    }
+    integerExponent += 1;
+
+    if(integerCoefficient == (integerExponent)){  if the coefficient becomes 1
+      coefficient = ""; //set as empty string since both values would cancel each other out
+
+    }else if(integerExponent and integerCoefficient have a common divider
+
+      int divisor = GDC(integerCoefficient, integerExponent); //get GCD value and update variables
+      integerCoefficient = integerCoefficient/divisor;
+      integerExponent = integerExponent/divisor;
+
+      if(integerExponent == 1){
+        coefficient = Integer.toString(integerCoefficient); //removes 1 denominator
+      }else{
+        coefficient = "(" + integerCoefficient + "/" + (integerExponent) + ")";
+      }
+    }else{
+      coefficient = "(" + integerCoefficient + "/" + (integerExponent) + ")";
+    }
+    exponent = Integer.toString(integerExponent);
+
+    integralResult = integerCoefficient + variable + "^" + exponent;
+
+    PayLoad payLoad = new PayLoad(integerCoefficient, integerExponent, variable);
+
+
+    return payLoad;
+
+  }
+  public static void evaluateIntegral(boolean isDefiniteIntegral, int boundsA, int boundsB){
+    
+
+
+  }
+
