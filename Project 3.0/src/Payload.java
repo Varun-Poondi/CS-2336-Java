@@ -1,10 +1,11 @@
 public class Payload implements Comparable<Payload> {
-    private int coefficient;
-    private int exponent;
+    private double coefficient;
+    private double exponent;
     private String integral;
     private String variable;
     private String operator;
-    public Payload(int coefficient, int exponent, String integral, String variable, String operator) {
+    
+    public Payload(double coefficient, double exponent, String integral, String variable, String operator) {
         this.coefficient = coefficient;
         this.exponent = exponent;
         this.integral = integral;
@@ -28,19 +29,19 @@ public class Payload implements Comparable<Payload> {
         this.variable = variable;
     }
 
-    public int getCoefficient() {
+    public double getCoefficient() {
         return coefficient;
     }
 
-    public void setCoefficient(int coefficient) {
+    public void setCoefficient(double coefficient) {
         this.coefficient = coefficient;
     }
 
-    public int getExponent() {
+    public double getExponent() {
         return exponent;
     }
 
-    public void setExponent(int exponent) {
+    public void setExponent(double exponent) {
         this.exponent = exponent;
     }
 
@@ -51,13 +52,27 @@ public class Payload implements Comparable<Payload> {
     public void setIntegral(String integral) {
         this.integral = integral;
     }
+    
+
+    @Override
+    public String toString() {
+        
+        return integral;
+    }
 
     @Override
     public int compareTo(Payload obj) {
         //-1 current payLoad  is less than the obj
         // 0 
-        return Integer.compare(this.exponent, obj.exponent);
+        return Double.compare(this.exponent, obj.exponent);
 
 
+    }
+    
+    public double evaluateNodeIntegral(int bound){
+        if(variable.equals("")){
+            return coefficient;
+        }
+        return coefficient*Math.pow(bound, exponent);
     }
 }

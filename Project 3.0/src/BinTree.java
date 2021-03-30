@@ -31,7 +31,18 @@ public class BinTree<T extends Comparable<T>>{
     public Node<T> Search(T payLoad, Node<T> node){
         return null;
     }
-    public void InOrderTraversal(){
+    public String postOrderTraversal(String printStatement, Node<T> currentNode){
+        StringBuilder string = new StringBuilder();
+        if(currentNode != null) {
+            string.append(postOrderTraversal(string.toString(), currentNode.getRightNode()));
+            string.append(currentNode.getPayLoad()).append(" ");
+            string.append(postOrderTraversal(string.toString(), currentNode.getLeftNode()));
+        }
         
+        return string.toString();
     }
+    public void clearTree(){
+        root = null;
+    }
+    
 }
