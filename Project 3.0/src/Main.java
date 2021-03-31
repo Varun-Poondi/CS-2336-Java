@@ -1,16 +1,20 @@
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+/*
+* Name: Varun Poondi
+* Net-ID: VMP190003
+* Prof: Jason Smith
+* Date: 3/30/2021
+* 
+* */
+
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static final BinTree<Payload> tree = new BinTree<>();
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.println("Hello World");
         Scanner input = new Scanner(System.in);
         String fileName;
         fileName = input.next();
@@ -22,25 +26,25 @@ public class Main {
             String exponent = "";
             String upperBounds = "";
             String lowerBounds = "";
-            boolean isDefinite = true;
             
+            removesWhiteSpace(expression);
             if(expression.charAt(0) == '|'){
-                isDefinite = false;
-                expression.replace(0,1,"");
-            }else{
-                lowerBounds = expression.substring(0,expression.indexOf("|"));
                 expression.replace(0,expression.indexOf("|")+1,"");
-                
+            }else{
+                removesWhiteSpace(expression);
+                lowerBounds = expression.substring(0,expression.indexOf("|"));
+                lowerBounds = lowerBounds.replaceAll(" ","");
+                expression.replace(0,expression.indexOf("|")+1,"");
+                removesWhiteSpace(expression);
                 upperBounds = expression.substring(0,expression.indexOf(" "));
                 expression.replace(0,expression.indexOf(" ")+1,"");
+               
             }
+            removeALlWhiteSpace(expression);
             expression.replace(expression.length()-2,expression.length(),""); //removes dx
-            for(int i = 0; i < expression.length(); i++){
-                if(Character.isWhitespace(expression.charAt(i))){
-                    expression.deleteCharAt(i);
-                    i--;
-                }
-            }
+//            removesWhiteSpace(expression);
+            
+            
             
             boolean finishedExpression = false;
             int j = 0;
@@ -108,6 +112,22 @@ public class Main {
             //else print integral with a + C at the end
         }
     }
+    public static void removeALlWhiteSpace(StringBuilder expression){
+        for(int i = 0; i < expression.length(); i++){
+            if(Character.isWhitespace(expression.charAt(i))){
+                expression.deleteCharAt(i);
+                i--;
+            }
+        }
+    }
+    public static void removesWhiteSpace(StringBuilder expression){
+        for(int i = 0; i < expression.length(); i++){
+            if(expression.charAt(i) != ' '){
+                expression.replace(0,i,"");
+                break;
+            }
+        }
+    }
     public static double GCD(double a, double b){
         if (b==0) return a;
         return GCD(b,a%b);
@@ -116,7 +136,7 @@ public class Main {
         String stringCoefficient = "";
         double doubleCoefficient;
         double doubleExponent;
-      
+
         String variable = "";
         String operand = "";
         for(int i = 0; i < coefficient.length(); i++){
@@ -129,9 +149,12 @@ public class Main {
                 variable += coefficient.charAt(i);
             }
         }
-        
-        doubleCoefficient = Integer.parseInt(stringCoefficient);
-        
+        if(stringCoefficient.equals("")) {
+            doubleCoefficient = 1;
+        }else{
+            doubleCoefficient = Integer.parseInt(stringCoefficient);
+        }
+
         if(exponent.equals("") && !variable.equals("")){
             doubleExponent = 1;
         }else if(exponent.equals("")) {
@@ -157,20 +180,17 @@ public class Main {
             double divisor = GCD(doubleCoefficient, doubleExponent);
             double tempExponent = doubleExponent;
             doubleCoefficient = doubleCoefficient/divisor;
-            if(divisor < 0){
-                divisor *= -1;
-            }
             tempExponent = tempExponent/divisor;
-            
+
             if(tempExponent == 1){  //6/1
                 coefficient = Integer.toString((int) doubleCoefficient);
             }else if(tempExponent == -1) {
                 coefficient = Integer.toString((int)doubleCoefficient* -1);
             }else{ //1/6
-                
+
                 coefficient = "(" + (int) doubleCoefficient + "/" + (int) (tempExponent) + ")";
                 doubleCoefficient =  doubleCoefficient / tempExponent;
-                
+
             }
         }else{
             coefficient = "(" + (int) doubleCoefficient + "/" + (int) (doubleExponent) + ")";
@@ -184,21 +204,25 @@ public class Main {
         }else if(doubleExponent == 1){
             finalIntegral = coefficient + variable;
         }else if(doubleCoefficient == -1){
-            finalIntegral = "-" + variable + "^" + exponent;
+            finalIntegral = "- " + variable + "^" + exponent;
+        }else if(doubleCoefficient < -1) {
+            coefficient = Integer.toString((int) doubleCoefficient * -1);
+            finalIntegral = "- " + coefficient + variable + "^" + exponent;
+        
         }else if(operand.equals("+") ||operand.equals("-")){
             finalIntegral = operand + " " + coefficient + variable + "^" + exponent;
         }else{
             finalIntegral = coefficient + variable + "^" + exponent;
         }
         
-        //System.out.println("Testing: " + doubleCoefficient);
         return new Payload(doubleCoefficient, doubleExponent, finalIntegral, variable, operand);
     }
     public static void printFinalIntegral(String lowerBound, String upperBound){
         String finalIntegral = tree.postOrderTraversal("",tree.getRoot());
+        StringBuilder format = new StringBuilder(finalIntegral);       
         if(!lowerBound.equals("")) {
-            float leftSide = 0;
-            float rightSide = 0;
+            float leftSide;
+            float rightSide;
             int intLowerBound = Integer.parseInt(lowerBound);
             int intUpperBound = Integer.parseInt(upperBound);
             
@@ -206,16 +230,26 @@ public class Main {
             leftSide = evaluateFullIntegral(tree.getRoot(), intUpperBound);
             
             float answer = leftSide - rightSide;
-            StringBuilder format = new StringBuilder(finalIntegral);
             format.replace(format.length()-1, format.length(),"");
             if(format.charAt(0) == '+'){
                 format.replace(0,2,"");
             }
+            if(format.charAt(0) == '-'){
+                format.insert(3,"-");
+            }
+            
             System.out.print(format + ", " + lowerBound + "|" + upperBound + " = ");
             System.out.format("%.3f\n",answer);
             
         }else{
-            System.out.println(finalIntegral + "+ C");
+            if(format.charAt(0) == '+'){
+                format.replace(0,2,"");
+            }
+            if(format.charAt(0) == '-'){
+                format.insert(3,"-");
+                format.replace(0,format.indexOf("("),"");
+            }
+            System.out.println(format + "+ C");
         }
     }
     

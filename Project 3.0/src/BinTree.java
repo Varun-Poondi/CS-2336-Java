@@ -5,7 +5,7 @@ public class BinTree<T extends Comparable<T>>{
         return root;
     }
 
-    public Node<T> Insert(Node<T> newNode, Node<T> currentNode){
+    public void Insert(Node<T> newNode, Node<T> currentNode){
         if(root == null){
             root = newNode;
         }else{
@@ -23,7 +23,7 @@ public class BinTree<T extends Comparable<T>>{
                }
             }
         }
-        return root;
+       // return root;
     }
     public void Delete(){
         
