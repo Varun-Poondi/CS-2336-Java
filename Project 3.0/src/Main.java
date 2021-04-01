@@ -5,8 +5,6 @@
 * Date: 3/30/2021
 * 
 * */
-
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -27,24 +25,21 @@ public class Main {
             String upperBounds = "";
             String lowerBounds = "";
             
-            removesWhiteSpace(expression);
+            removesWhiteSpaceUntilChar(expression);
             if(expression.charAt(0) == '|'){
                 expression.replace(0,expression.indexOf("|")+1,"");
             }else{
-                removesWhiteSpace(expression);
+                removesWhiteSpaceUntilChar(expression);
                 lowerBounds = expression.substring(0,expression.indexOf("|"));
                 lowerBounds = lowerBounds.replaceAll(" ","");
                 expression.replace(0,expression.indexOf("|")+1,"");
-                removesWhiteSpace(expression);
+                removesWhiteSpaceUntilChar(expression);
                 upperBounds = expression.substring(0,expression.indexOf(" "));
                 expression.replace(0,expression.indexOf(" ")+1,"");
-               
             }
             removeALlWhiteSpace(expression);
             expression.replace(expression.length()-2,expression.length(),""); //removes dx
-//            removesWhiteSpace(expression);
-            
-            
+
             
             boolean finishedExpression = false;
             int j = 0;
@@ -82,34 +77,23 @@ public class Main {
                     }
                 }
                 if(finishedExpression || (i+1) == expression.length()){
-                    finishedExpression = false;
-                    beginningOpNotFoundC = true;
-
-                    // integrate expression
-                    // add payload to node
-                    // add node to the tree
-                    Payload payload = integrate(coefficient, exponent);
-             
-                    //System.out.println(payload.getIntegral());
-                    Node<Payload> node= new Node<>(payload);
-                    tree.Insert(node, tree.getRoot());
-                    
-                    
-                    //reset variables
-                    coefficient = "";
-                    exponent = "";
                     if(foundCarrot) {
                         i = j - 1;  //update bounds
                         foundCarrot = false;
                     }else if((i+1) != expression.length()){
                         i-=1;
                     }
+                    finishedExpression = false;
+                    beginningOpNotFoundC = true;
+                    Payload payload = new Payload(coefficient,exponent);
+                    Node<Payload> node= new Node<>(payload);
+                    tree.Insert(node, tree.getRoot());
+                    coefficient = "";
+                    exponent = "";
                 }
             }
             printFinalIntegral(lowerBounds, upperBounds);
             tree.clearTree();
-            //if integral is definite, get binary tree for integral and pass it into an integral evaluator function
-            //else print integral with a + C at the end
         }
     }
     public static void removeALlWhiteSpace(StringBuilder expression){
@@ -120,7 +104,7 @@ public class Main {
             }
         }
     }
-    public static void removesWhiteSpace(StringBuilder expression){
+    public static void removesWhiteSpaceUntilChar(StringBuilder expression){
         for(int i = 0; i < expression.length(); i++){
             if(expression.charAt(i) != ' '){
                 expression.replace(0,i,"");
@@ -128,95 +112,7 @@ public class Main {
             }
         }
     }
-    public static double GCD(double a, double b){
-        if (b==0) return a;
-        return GCD(b,a%b);
-    }
-    public static Payload integrate(String coefficient, String exponent){
-        String stringCoefficient = "";
-        double doubleCoefficient;
-        double doubleExponent;
-
-        String variable = "";
-        String operand = "";
-        for(int i = 0; i < coefficient.length(); i++){
-            char checker = coefficient.charAt(i);
-            if(Character.isDigit(checker)){
-                stringCoefficient += coefficient.charAt(i);
-            }else if(checker == '+' || checker == '-'){
-                operand += checker;
-            }else{
-                variable += coefficient.charAt(i);
-            }
-        }
-        if(stringCoefficient.equals("")) {
-            doubleCoefficient = 1;
-        }else{
-            doubleCoefficient = Integer.parseInt(stringCoefficient);
-        }
-
-        if(exponent.equals("") && !variable.equals("")){
-            doubleExponent = 1;
-        }else if(exponent.equals("")) {
-            doubleExponent = 0;
-        }else {
-            doubleExponent = Integer.parseInt(exponent);
-        }
-
-        doubleExponent += 1;
-        if(exponent.equals("") && variable.equals("")){
-            //hard coded, figure out a way to find what variable to add.
-            if(doubleCoefficient == 1){
-                coefficient = "x";
-            }else{
-                coefficient = (int) doubleCoefficient + "x";
-            }
-            variable = "x";
-
-        }else if(doubleCoefficient == doubleExponent){
-            coefficient = "";
-            doubleCoefficient = 1;
-        }else if(GCD(doubleCoefficient, doubleExponent) != 1){
-            double divisor = GCD(doubleCoefficient, doubleExponent);
-            double tempExponent = doubleExponent;
-            doubleCoefficient = doubleCoefficient/divisor;
-            tempExponent = tempExponent/divisor;
-
-            if(tempExponent == 1){  //6/1
-                coefficient = Integer.toString((int) doubleCoefficient);
-            }else if(tempExponent == -1) {
-                coefficient = Integer.toString((int)doubleCoefficient* -1);
-            }else{ //1/6
-
-                coefficient = "(" + (int) doubleCoefficient + "/" + (int) (tempExponent) + ")";
-                doubleCoefficient =  doubleCoefficient / tempExponent;
-
-            }
-        }else{
-            coefficient = "(" + (int) doubleCoefficient + "/" + (int) (doubleExponent) + ")";
-            doubleCoefficient = doubleCoefficient / doubleExponent;
-        }
-        exponent = Integer.toString((int) doubleExponent);
-
-        String finalIntegral = "";
-        if(doubleExponent == 1 && !operand.equals("")){
-            finalIntegral = operand + " " + coefficient;
-        }else if(doubleExponent == 1){
-            finalIntegral = coefficient + variable;
-        }else if(doubleCoefficient == -1){
-            finalIntegral = "- " + variable + "^" + exponent;
-        }else if(doubleCoefficient < -1) {
-            coefficient = Integer.toString((int) doubleCoefficient * -1);
-            finalIntegral = "- " + coefficient + variable + "^" + exponent;
-        
-        }else if(operand.equals("+") ||operand.equals("-")){
-            finalIntegral = operand + " " + coefficient + variable + "^" + exponent;
-        }else{
-            finalIntegral = coefficient + variable + "^" + exponent;
-        }
-        
-        return new Payload(doubleCoefficient, doubleExponent, finalIntegral, variable, operand);
-    }
+    
     public static void printFinalIntegral(String lowerBound, String upperBound){
         String finalIntegral = tree.postOrderTraversal("",tree.getRoot());
         StringBuilder format = new StringBuilder(finalIntegral);       
@@ -253,7 +149,6 @@ public class Main {
         }
     }
     
-    
     public static float evaluateFullIntegral(Node<Payload> currentNode, int bound){
         float total = 0;
         if(currentNode == null){
@@ -262,11 +157,7 @@ public class Main {
             total +=  evaluateFullIntegral(currentNode.getLeftNode(), bound);
             total +=  evaluateFullIntegral(currentNode.getRightNode(), bound);
             total += currentNode.getPayLoad().evaluateNodeIntegral(bound);
-
-            //System.out.println(total);
         }
         return total;
     }
-    
-    
 }
