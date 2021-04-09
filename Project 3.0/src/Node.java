@@ -1,4 +1,11 @@
-public class Node<N extends Comparable <N>> implements Comparable<Node<N>>{
+/*
+ * Name: Varun Poondi
+ * Net-ID: VMP190003
+ * Prof: Jason Smith
+ * Date: 3/30/2021
+ * */
+
+public class Node<N extends Comparable <N>> implements Comparable<Node<N>>{ 
     private Node<N> leftNode;
     private N payLoad;
     private Node<N> rightNode;
@@ -9,6 +16,7 @@ public class Node<N extends Comparable <N>> implements Comparable<Node<N>>{
         rightNode = null;
     }
 
+    /*****GETTERS AND SETTERS*****/
     public Node<N> getLeftNode() {
         return leftNode;
     }
@@ -34,7 +42,7 @@ public class Node<N extends Comparable <N>> implements Comparable<Node<N>>{
     }
 
     @Override
-    public int compareTo(Node<N> obj) {
+    public int compareTo(Node<N> obj) { //compare to method will call the compareTo method in payLoad
        return this.payLoad.compareTo(obj.payLoad);
     }
 }
