@@ -1,0 +1,229 @@
+Name: Varun Poondi
+Net-ID: VMP190003
+Prof: Jason Smith
+Date: 4/12/2021
+
+
+Steps:
+1. Create file, check if file exist, else while loop it
+2. Read the keyFile.txt file and store values into a hashTable. The key will be the string, and the value will be the header associated 
+   with the key. After I have don this step, I must read the file player so that I can store them into a hashTable.
+  Note: If there is a player detected that has the same name, then I need to update the class of the player. I need to have all the players values updated before I can separate the table into Home and Away. This will make it easier to print the info and easier to sort the players and leaders.
+3. Separate the home from away players and store them in their own tables
+4. Sort each table using the treeMap class or collection
+5. Print out each table and the table will be sorted based on alphabetical precedence. Print has to be custom due to how we want to display the player
+  Note: The players may have a toString method in which will be called by the print method in main. The print method can be in the generic hashMap class I may create. 
+6. Print the leaders for each Category, This will be done with the use of ArrayLists, use the code from Project 2 on finding the leaders. Keep in mind that the League Leaders calculates for both the Home and Away team. In order to approach this issue, I must find the leaders for the home team and then the away team. I will add the away team first, and then the home team. I sort the arrayList alphabetically, then find the leaders. If there is a tie, print out the Away Player before the Home Player
+7. Close the file and exit.
+
+
+
+Hash Tables To Create:
+1. Home Team 
+2. Away Team
+3. KeyFile look up table
+
+
+
+Pseudo Code will discuss operations in main:
+
+public class Main{
+
+  public static void main(String[] args){
+
+  Prompt for KeyFile.txt and do file check.
+  Store Keyfile.txt into a HashTable. The key being the string, the value being what category it is (hits, outs, strikeouts, etc)
+
+
+
+
+  Prompt for sample_playbyplay.txt and do file check.
+  
+
+
+
+
+
+
+
+  }
+  public static HashTable<String, String> readKeyFile(){
+
+  }
+  public static HashTable<String, Player> readTeamsFile(){
+
+  }
+
+  public static void displayToScores(arrayList<Player> Home, arrayList<Player> Away){
+    printLeaders(6,Home, Away);
+    printLeaders(7,Home, Away);
+    printLeaders(1,Home, Away);
+    printLeaders(2,Home, Away);
+    printLeaders(3,Home, Away);
+    printLeaders(4,Home, Away);
+  }
+
+  public static void printLeaders(int categoryIndex, arrayList<Player> Home, arrayList<Player> Away, String categoryName){
+    FindLeaders(Away, Overall, categoryIndex);
+    FindLeaders(Home, Overall, categoryIndex);
+    Collections.sort(Overall); //sort alphabetically using the compareTo method in the player class
+    FindOverallLeaders(Overall, categoryIndex, categoryName);  
+  }
+
+  public static void FindLeaders(arrayList<Player> Team, arrayList<Player> Overall, int categoryIndex){
+    //initialize to a low value to be able to find max highScore, chose -100 cuz why not??
+    double firstPlace = -100.0;
+    double secondPlace = -100.0;
+    double thirdPlace = -100.0;
+    double compareValue = 0;
+
+    if(index == 3) { //these variables will be changed only if we are trying to find the StrikeOuts leaders 
+      firstPlace = Double.MAX_VALUE;
+      secondPlace = Double.MAX_VALUE;
+      thirdPlace = Double.MAX_VALUE;
+    }
+    for(int i = 0; i < Team.size(); i++){
+      compareValue = Team.get(i).getStatsArray()[categoryIndex];
+
+      if(categoryIndex == 3){
+        if (compareValue < firstPlace) { //store in first place
+            thirdPlace = secondPlace;
+            secondPlace = firstPlace;
+            firstPlace = compareValue
+        } else if (compareValue < secondPlace) { //store in second place
+            thirdPlace = secondPlace;
+            secondPlace = compareValue
+        } else if (compareValue < thirdPlace) { //store in third place
+            thirdPlace = compareValue
+        }
+      }else{
+        if (compareValue > firstPlace) { //store in first place
+            thirdPlace = secondPlace;
+            secondPlace = firstPlace;
+            firstPlace = compareValue
+        } else if (compareValue > secondPlace) { //store in second place
+            thirdPlace = secondPlace;
+            secondPlace = compareValue
+        } else if (compareValue > thirdPlace) { //store in third place
+            thirdPlace = compareValue
+        }
+      }
+    }
+
+    After this point, I have gotten the top scores for the category, I need to now find the player objects that possess these values and store them into the overall array.
+    for(int i = 0; i < Team.size(); i++){
+      Player currentPlayer = Team.get(i);
+      double statsCheck = currentPlayer.getStatsArray()[categoryIndex];
+      if(statsCheck == firstPlace || statsCheck == secondPlace || statsCheck == thirdPlace){
+        Overall.add(currentPlayer);
+      }
+    }
+    I have now added the Player objects that were in the top 3 places into the overall arrayList
+  }
+  
+
+  pubic static void FindOverallLeaders(arrayList<Player> Overall, int categoryIndex, String categoryName){
+    //initialize to a low value to be able to find max highScore, chose -100 cuz why not??
+    double firstPlace = -100.0;
+    double secondPlace = -100.0;
+    double thirdPlace = -100.0;
+    
+    double compareValue = 0;
+    String playerName = "";
+   
+    boolean isFComma = true;
+    boolean isSComma = true;
+    boolean isTComma = true;
+
+    StringBuilder firstLeaders = new StringBuilder();
+    StringBuilder secondLeaders = new StringBuilder();
+    StringBuilder thirdLeaders = new StringBuilder();
+
+    if(index == 3) { //these variables will be changed only if we are trying to find the StrikeOuts leaders 
+      firstPlace = Double.MAX_VALUE;
+      secondPlace = Double.MAX_VALUE;
+      thirdPlace = Double.MAX_VALUE;
+    }
+    for(int i = 0; i < Team.size(); i++){
+      compareValue = Overall.get(i).getStatsArray()[categoryIndex];
+
+      if(categoryIndex == 3){
+        if (compareValue < firstPlace) { //store in first place
+            thirdPlace = secondPlace;
+            secondPlace = firstPlace;
+            firstPlace = compareValue
+        } else if (compareValue < secondPlace) { //store in second place
+            thirdPlace = secondPlace;
+            secondPlace = compareValue
+        } else if (compareValue < thirdPlace) { //store in third place
+            thirdPlace = compareValue
+        }
+      }else{
+        if (compareValue > firstPlace) { //store in first place
+            thirdPlace = secondPlace;
+            secondPlace = firstPlace;
+            firstPlace = compareValue
+        } else if (compareValue > secondPlace) { //store in second place
+            thirdPlace = secondPlace;
+            secondPlace = compareValue
+        } else if (compareValue > thirdPlace) { //store in third place
+            thirdPlace = compareValue
+        }
+      }
+    }
+    for(int i = 0; i < Overall.size(); i++){
+      compareValue = Overall.get(i).getStatsArray[categoryIndex];
+      playerName = Overall.get(i).getName();
+      if(compareValue ==firstPlace){
+        if(isFComma) {
+          firstLeaders.append(playerName);
+          isFComma = false;
+        }else{
+          firstLeaders.append(", ").append(playerName);
+        }
+      }else if(compareValue == secondPlace){
+        if(isSComma) {
+          secondLeaders.append(playerName);
+          isSComma = false;
+        }else{
+          secondLeaders.append(", ").append(playerName);
+        }
+      }else if(compareValue == thirdPlace){
+        if(isTComma) {
+          thirdLeaders.append(playerName);
+          isTComma = false;
+        }else{
+          thirdLeaders.append(", ").append(playerName);
+        }
+      }
+    }
+    System.out.println(categoryName);
+    if (index == 6 || index == 7) { //special case, 6, 7 have decimal precision 
+        boolean isNanFirst = Double.isNaN(firstPlace);
+        boolean isNanSecond = Double.isNaN(secondPlace);
+        boolean isNanThird = Double.isNaN(thirdPlace);
+        //check if any of the places are getting divided by 0, if so, set the places to 0.000
+        if (isNanFirst) firstPlace = 0.000;
+        if (isNanSecond) secondPlace = 0.000;
+        if (isNanThird) thirdPlace = 0.000;
+        
+        String fP = String.format("%.3f", (float) firstPlace);
+        String sP = String.format("%.3f", (float) secondPlace);
+        String tP = String.format("%.3f", (float) thirdPlace);
+
+        //as long as the strings is not empty, display the names 
+        if (!firstLeaders.toString().equals("")) System.out.println(fP + "\t" + firstLeaders);
+        if (!secondLeaders.toString().equals("")) System.out.println(sP + "\t" + secondLeaders);
+        if (!thirdLeaders.toString().equals("")) System.out.println(tP + "\t" + thirdLeaders);
+        
+    } else {
+        //as long as the strings are not empty, display the names
+        if (!firstLeaders.toString().equals("")) System.out.println(Math.round(firstPlace) + "\t" + firstLeaders);
+        if (!secondLeaders.toString().equals("")) System.out.println(Math.round(secondPlace) + "\t" + secondLeaders);
+        if (!thirdLeaders.toString().equals("")) System.out.println(Math.round(thirdPlace) + "\t" + thirdLeaders);
+    }
+
+  }
+
+}
+
