@@ -83,8 +83,10 @@ public class Player implements Comparable<Player>{
 
     @Override
     public String toString() {
+        String stat6 = String.format("%.3f", (float) stats[6]);
+        String stat7 = String.format("%.3f", (float) stats[7]);
         return name + "\t" + Math.round(stats[0]) + "\t" + Math.round(stats[1]) + "\t" + Math.round(stats[2]) + "\t" + Math.round(stats[3]) + "\t" +
-                Math.round(stats[4]) + "\t" + Math.round(stats[5]) + "\t" + stats[6] + "\t" + stats[7]; 
+                Math.round(stats[4]) + "\t" + Math.round(stats[5]) + "\t" + stat6 + "\t" +stat7; 
     }
 
     @Override
