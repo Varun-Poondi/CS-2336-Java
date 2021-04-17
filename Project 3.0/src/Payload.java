@@ -164,7 +164,8 @@ public class Payload implements Comparable<Payload> {
     }
     
     /*this functions evaluates the this payload with the given bound from main */
-    public double evaluateNodeIntegral(int bound){ 
+    public double evaluateNodeIntegral(int bound){
+        
         if(variable.isEmpty()){
             return coefficient;
         }
@@ -366,7 +367,6 @@ public class Payload implements Comparable<Payload> {
             if (!stringCoefficient.isEmpty() && stringCoefficient.equals("1")) {
                 stringCoefficient = stringCoefficient.replace("1", "");
             }
-
 
             //print the final integral
             finalIntegral = operator + stringCoefficient + variable + stringExponent;
