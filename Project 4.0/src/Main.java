@@ -1,3 +1,13 @@
+/* Name: Varun Poondi
+* Net ID: VMP190003
+* Prof: Jason Smith
+* Date: 4/27/2021
+* */
+
+
+
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,16 +19,18 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner1 = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        String keyFileName = fileChecker(scanner1);
+
+        Scanner scanner2 = new Scanner(System.in); //reads the teamsFile
         String teamsFileName = fileChecker(scanner2);
-        Scanner sc = new Scanner(new BufferedReader(new FileReader(keyFileName)));
+        
+        //by the time it gets to this statement, both files have been checked if they exist
+        Scanner sc = new Scanner(new BufferedReader(new FileReader("keyfile.txt"))); 
         Scanner sc1 = new Scanner(new BufferedReader(new FileReader(teamsFileName)));
 
-        Hashtable<String, String> KeyFile = readKeyFile(sc);
-        Hashtable<String, Player> TeamsTable = readTeamsFile(sc1, KeyFile);
+        Hashtable<String, String> KeyFile = readKeyFile(sc);  //read the keyFile and store the info into the keyFile hashTable
+        Hashtable<String, Player> TeamsTable = readTeamsFile(sc1, KeyFile); //read the teamsFile and store the info into the teamsTable hashTable
         
+        //create two arraylists, these arrayList will contain the hashTables in a list format and will be used in the sorting and leader finding process
         ArrayList<Player> Home = new ArrayList<>();
         ArrayList<Player> Away = new ArrayList<>();
         
@@ -28,46 +40,43 @@ public class Main {
         printStats(Home, "HOME");
         
         displayToScores(Home, Away);
-        //KeyFile.forEach((k, v) -> System.out.println("Key : " + k + ", Value : " + v));
-
-
     }
     public static String fileChecker(Scanner scanner){
         String fileName = scanner.next();
         File fileObj = new File(fileName);
         boolean fileIsReadable = false;
-        while(!fileIsReadable) {
+        while(!fileIsReadable) { //if the file is not readable
             try {
-                if (!fileObj.canRead()) {
-                    throw new FileNotFoundException();
+                if (!fileObj.canRead()) { //check if the given file is not readable
+                    throw new FileNotFoundException(); //throw exception
                 } else {
-                    fileIsReadable = true;
+                    fileIsReadable = true; //update boolean value
                 }
-            } catch (Exception e) {
-                System.out.println("File was not found, please try again.");
-                fileName = scanner.next();
-                fileObj = new File(fileName); //ask for file input again to be tested
+            } catch (Exception e) { //catch exception
+                System.out.println("File was not found, please try again."); //prompt
+                fileName = scanner.next(); //read the new fileName. Ask for file input again to be tested
+                fileObj = new File(fileName);
             }
         }
-        return fileName;
+        return fileName; //this file is a valid readable file
     }
-    public static Hashtable<String, String> readKeyFile(Scanner scanner){
+    public static Hashtable<String, String> readKeyFile(Scanner scanner){ 
         Hashtable<String, String> table = new Hashtable<>();
         String headerName = ""; //remove the hashTags later
         String keyValue;
-        while(scanner.hasNextLine()){
-            String line = scanner.nextLine();
-            boolean isHeader = line.contains("#");
-            if(isHeader){
-                headerName =  line;
-                headerName = headerName.replace("#", "");
-                headerName = headerName.replace(" ", "");
-            }else if(!line.isEmpty()){
-                keyValue = line;
-                table.put(keyValue, headerName);
+        while(scanner.hasNextLine()){ 
+            String line = scanner.nextLine(); //get the line of text to be parsed
+            boolean isHeader = line.contains("#"); //create boolean value depending if line contains a #, meaning header
+            if(isHeader){ //if true
+                headerName =  line; // set the line as the header name
+                headerName = headerName.replace("#", ""); //remove the hashtag
+                headerName = headerName.replace(" ", ""); //remove the spaces
+            }else if(!line.isEmpty()){ //if the line is not empty
+                keyValue = line; //the keyValue along with the header is stored in the table
+                table.put(keyValue, headerName); //store the key and value
             }
         }
-     return table;   
+     return table;   //return table
     }
     public static Hashtable<String, Player> readTeamsFile(Scanner scanner, Hashtable<String, String> keyTable){
         Hashtable<String, Player> table = new Hashtable<>();
@@ -75,37 +84,37 @@ public class Main {
         String code;
         String team;
         while(scanner.hasNextLine()){
-            String line = scanner.nextLine();
-            team = line.substring(0,1);
-            name = line.substring(2, line.lastIndexOf(" "));
-            code = line.substring(line.lastIndexOf(" ") + 1);
-            if(table.get(name) == null){
-                Player player = new Player(name, team);
-                player.decipherCode(code, keyTable);
-                table.put(name, player);
+            String line = scanner.nextLine(); //get the line of text to be parsed
+            team = line.substring(0,1); //get the team name
+            name = line.substring(2, line.lastIndexOf(" ")); // get the player name
+            code = line.substring(line.lastIndexOf(" ") + 1); //get the player's batting code
+            if(table.get(name) == null){ //if the table does not have this player recorded,
+                Player player = new Player(name, team); //create a new player obj
+                player.decipherCode(code, keyTable); //decipher the code and update the player's stats array
+                table.put(name, player); //put this value into the table
             }else{
-                table.get(name).decipherCode(code, keyTable);
+                table.get(name).decipherCode(code, keyTable); //get the player found and update their stats array
             }
         }
         return table;
     }
     public static void separateMasterHashTable(Hashtable<String, Player> TeamsTable, ArrayList<Player> Home, ArrayList<Player> Away){
-        ArrayList<Player> master = new ArrayList<>(TeamsTable.values());
+        ArrayList<Player> master = new ArrayList<>(TeamsTable.values()); //master array List contains the TeamsTable which has both home and away players
         for (Player player : master) {
-            if (player.getTeam().equals("A")) {
-                Away.add(player);
-            } else {
-                Home.add(player);
+            if (player.getTeam().equals("A")) { //if the player is playing for the away team 
+                Away.add(player); //store the player into the away team arraylist
+            } else { 
+                Home.add(player); //store the player into the home team arraylist
             }
         }
     }
     public static void printStats(ArrayList<Player> team, String title){
-        System.out.println(title);
-        Collections.sort(team);
+        System.out.println(title); 
+        Collections.sort(team); //sort the team based on alphabetical precedence
         for (Player player : team) {
-            System.out.println(player);
+            System.out.println(player); //print the players
         }
-        System.out.println();
+        System.out.println(); //create a new line
     }
     public static void displayToScores(ArrayList<Player> Home, ArrayList<Player> Away){  //simple function that will print the leaders based on the index of the required print
         System.out.println("LEAGUE LEADERS");
@@ -117,18 +126,18 @@ public class Main {
         printLeaders(4,Home, Away,"HIT BY PITCH");
     }
     public static void printLeaders(int categoryIndex, ArrayList<Player> Home, ArrayList<Player> Away, String categoryName){ //helper function that will pass in the arrayList and print out the overallLeaders
-        ArrayList<Player> Overall = new ArrayList<>();
-        FindLeaders(Away, Overall, categoryIndex);
-        FindLeaders(Home, Overall, categoryIndex);
+        ArrayList<Player> Overall = new ArrayList<>(); //overall will be used to get the best players from each team and find who were the best players from both teams
+        FindLeaders(Away, Overall, categoryIndex); //get the leaders from the away team 
+        FindLeaders(Home, Overall, categoryIndex); //get the leaders from the home team 
         //Collections.sort(Overall); //sort alphabetically using the compareTo method in the player class
-        FindOverallLeaders(Overall, categoryIndex, categoryName);
+        FindOverallLeaders(Overall, categoryIndex, categoryName); // find the leaders from leaders of the home and away team
     }
     public static void FindLeaders(ArrayList<Player> Team, ArrayList<Player> Overall, int categoryIndex){  //finds the leaders in each individual category. The function will get both Away and Home passed in this order
         //initialize to a low value to be able to find max highScore, chose -100 cuz why not?? 
         double firstPlace = -100.0;
         double secondPlace = -100.0;
         double thirdPlace = -100.0;
-        double compareValue = 0;
+        double compareValue;
 
         if(categoryIndex == 3) { //these variables will be changed only if we are trying to find the StrikeOuts leaders 
             firstPlace = Double.MAX_VALUE;
@@ -196,8 +205,8 @@ public class Main {
             secondPlace = Double.MAX_VALUE;
             thirdPlace = Double.MAX_VALUE;
         }
-        for (Player player : Overall) {
-            compareValue = player.getStats()[categoryIndex];
+        for (Player player : Overall) { //traverse through the overall arrayList
+            compareValue = player.getStats()[categoryIndex]; //init the compare value
 
             if (categoryIndex == 3) {
                 if (compareValue < firstPlace) { //store in first place
