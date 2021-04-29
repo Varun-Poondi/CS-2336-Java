@@ -37,7 +37,7 @@ public class Player implements Comparable<Player>{
         this.plateApps += 1;
     }
 
-    public void decipherCode(String code, Hashtable<String, String> keyTable){ //pass in the hashTable and the code that we are searching
+    public void decipherCode(String code, GenericHashMap<String, String> keyTable){ //pass in the hashTable and the code that we are searching
         String codeResult = keyTable.get(code); //get the result of the code by searching through the table
         switch (codeResult) { //based on the code result, the switch statement will use the setters to update the stats array
             case "HITS": 

@@ -4,17 +4,12 @@
 * Date: 4/27/2021
 * */
 
-
-
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Main {
@@ -22,23 +17,23 @@ public class Main {
 
         Scanner scanner2 = new Scanner(System.in); //reads the teamsFile
         String teamsFileName = fileChecker(scanner2);
-        
+
         //by the time it gets to this statement, both files have been checked if they exist
-        Scanner sc = new Scanner(new BufferedReader(new FileReader("keyfile.txt"))); 
+        Scanner sc = new Scanner(new BufferedReader(new FileReader("keyfile.txt")));
         Scanner sc1 = new Scanner(new BufferedReader(new FileReader(teamsFileName)));
 
-        Hashtable<String, String> KeyFile = readKeyFile(sc);  //read the keyFile and store the info into the keyFile hashTable
-        Hashtable<String, Player> TeamsTable = readTeamsFile(sc1, KeyFile); //read the teamsFile and store the info into the teamsTable hashTable
-        
+        GenericHashMap<String, String> KeyFile = readKeyFile(sc);  //read the keyFile and store the info into the keyFile hashTable
+        GenericHashMap<String, Player> TeamsTable = readTeamsFile(sc1, KeyFile); //read the teamsFile and store the info into the teamsTable hashTable
+
         //create two arraylists, these arrayList will contain the hashTables in a list format and will be used in the sorting and leader finding process
         ArrayList<Player> Home = new ArrayList<>();
         ArrayList<Player> Away = new ArrayList<>();
-        
+
         separateMasterHashTable(TeamsTable, Home, Away);
 
         printStats(Away, "AWAY");
         printStats(Home, "HOME");
-        
+
         displayToScores(Home, Away);
     }
     public static String fileChecker(Scanner scanner){
@@ -60,11 +55,11 @@ public class Main {
         }
         return fileName; //this file is a valid readable file
     }
-    public static Hashtable<String, String> readKeyFile(Scanner scanner){ 
-        Hashtable<String, String> table = new Hashtable<>();
+    public static GenericHashMap<String, String> readKeyFile(Scanner scanner){
+        GenericHashMap<String, String> table = new GenericHashMap<>();
         String headerName = ""; //remove the hashTags later
         String keyValue;
-        while(scanner.hasNextLine()){ 
+        while(scanner.hasNextLine()){
             String line = scanner.nextLine(); //get the line of text to be parsed
             boolean isHeader = line.contains("#"); //create boolean value depending if line contains a #, meaning header
             if(isHeader){ //if true
@@ -76,10 +71,10 @@ public class Main {
                 table.put(keyValue, headerName); //store the key and value
             }
         }
-     return table;   //return table
+        return table;   //return table
     }
-    public static Hashtable<String, Player> readTeamsFile(Scanner scanner, Hashtable<String, String> keyTable){
-        Hashtable<String, Player> table = new Hashtable<>();
+    public static GenericHashMap<String, Player> readTeamsFile(Scanner scanner, GenericHashMap<String, String> keyTable){
+        GenericHashMap<String, Player> table = new GenericHashMap<>();
         String name;
         String code;
         String team;
@@ -98,18 +93,22 @@ public class Main {
         }
         return table;
     }
-    public static void separateMasterHashTable(Hashtable<String, Player> TeamsTable, ArrayList<Player> Home, ArrayList<Player> Away){
-        ArrayList<Player> master = new ArrayList<>(TeamsTable.values()); //master array List contains the TeamsTable which has both home and away players
+    public static void separateMasterHashTable(GenericHashMap<String, Player> TeamsTable, ArrayList<Player> Home, ArrayList<Player> Away){
+        ArrayList<Player> master = TeamsTable.valueTable; //master array List contains the TeamsTable which has both home and away players
+
         for (Player player : master) {
-            if (player.getTeam().equals("A")) { //if the player is playing for the away team 
-                Away.add(player); //store the player into the away team arraylist
-            } else { 
-                Home.add(player); //store the player into the home team arraylist
+            if (player != null) {
+                if (player.getTeam().equals("A")) { //if the player is playing for the away team 
+                    Away.add(player); //store the player into the away team arraylist
+                } else {
+                    Home.add(player); //store the player into the home team arraylist
+                }
             }
         }
+
     }
     public static void printStats(ArrayList<Player> team, String title){
-        System.out.println(title); 
+        System.out.println(title);
         Collections.sort(team); //sort the team based on alphabetical precedence
         for (Player player : team) {
             System.out.println(player); //print the players
@@ -172,14 +171,14 @@ public class Main {
             }
         }
 
-       // After this point, I have gotten the top scores for the category, I need to now find the player objects that possess these values and store them into the overall array.
+        // After this point, I have gotten the top scores for the category, I need to now find the player objects that possess these values and store them into the overall array.
         for (Player currentPlayer : Team) {
             double statsCheck = currentPlayer.getStats()[categoryIndex];
             if (statsCheck == firstPlace || statsCheck == secondPlace || statsCheck == thirdPlace) {
                 Overall.add(currentPlayer);
             }
         }
-       // I have now added the Player objects that were in the top 3 places into the overall arrayList
+        // I have now added the Player objects that were in the top 3 places into the overall arrayList
     }
 
 
