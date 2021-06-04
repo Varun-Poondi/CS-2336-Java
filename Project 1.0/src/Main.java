@@ -25,8 +25,8 @@ public class Main {
         char beetleChar;
         
        //use scanner to retrieve userInput and store into variables
-        System.out.print("Enter File Name: ");
-        fileName = sc1.next();
+//        System.out.print("Enter File Name: ");
+//        fileName = sc1.next();
         System.out.print("Enter Ant Character: ");
         antChar = sc1.next().charAt(0);
         System.out.print("Enter Beetle Character: ");
@@ -34,10 +34,17 @@ public class Main {
         System.out.print("Enter Number Of Turns: ");
         numberOfTurns = sc1.nextInt();
 
+/*
 
         Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName))); //sc used to read the fileName
         readFile(sc, convert); //pass in Scanner sc and regular char grid
         charToCreatureGird(creatures, convert); //convert char grid to Creature grid
+        
+*/
+        
+        RandomMapGenerator map = new RandomMapGenerator(antChar, beetleChar);
+        convert = map.generateGrid();
+        charToCreatureGird(creatures, convert, antChar, beetleChar);
         
         int counter = 0; //turn counter
         while(counter < numberOfTurns){ 
@@ -60,9 +67,9 @@ public class Main {
             
         }
         //Close all scanners after info after grids have been printed
-        sc.close();
-        sc1.close();
-        System.out.println("Game is Complete!");
+//        sc.close();
+//        sc1.close();
+        System.out.println("Simulation is Complete!");
     }
     
     public static void readFile(Scanner sc, char[][] convert){
@@ -90,12 +97,12 @@ public class Main {
     * If there is an ' ' located in char grid at index[i][j], set null in Creature grid at index[i][j]
     * indexes will be aligned since both Creature and char grids are both parallel 2D arrays
     * */
-    public static void charToCreatureGird(Creature[][] creatures, char[][] convert){
+    public static void charToCreatureGird(Creature[][] creatures, char[][] convert, char antChar, char beetleChar){
         for(int i = 0; i < convert.length; i++){
             for(int j = 0; j < convert[i].length; j++){
-                if(convert[i][j] == 'a'){ 
+                if(convert[i][j] == antChar){ 
                     creatures[i][j] = new Ant(); 
-                }else if (convert[i][j] == 'B'){
+                }else if (convert[i][j] == beetleChar){
                     creatures[i][j] = new Beetle();
                 }else if (convert[i][j] == ' '){
                     creatures[i][j] = null;
