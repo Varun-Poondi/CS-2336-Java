@@ -128,6 +128,27 @@ public class BinTree<T extends Comparable<T>>{
         
         return string.toString(); //return the string
     }
+    public void inOrderTraversal(Node<T> currentNode){
+        if(currentNode != null) {
+            inOrderTraversal(currentNode.getLeftNode());
+            System.out.print(currentNode.getPayLoad() + " ");
+            inOrderTraversal(currentNode.getRightNode());
+        }
+    }
+    public void preOrderTraversal(Node<T> currentNode){
+        if(currentNode != null) {
+            System.out.print(currentNode.getPayLoad() + " ");
+            preOrderTraversal(currentNode.getLeftNode());
+            preOrderTraversal(currentNode.getRightNode());
+        }
+    }
+    public void postOrderTraversal(Node<T> currentNode){
+        if(currentNode != null) {
+            postOrderTraversal(currentNode.getLeftNode());
+            postOrderTraversal(currentNode.getRightNode());
+            System.out.print(currentNode.getPayLoad() + " ");
+        }
+    }
     public void clearTree(){ //garbage collection will handle the rest
         root = null;
     }
